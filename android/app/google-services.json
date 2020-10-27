@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "732653755706",
+    "firebase_url": "https://agri-com.firebaseio.com",
+    "project_id": "agri-com",
+    "storage_bucket": "agri-com.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732653755706:android:7e7411d4b8b386ec5a4403",
+        "android_client_info": {
+          "package_name": "com.example.agri_com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732653755706-crgi16hj6roddjl3idoca6e3ojrv3cgh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.agri_com",
+            "certificate_hash": "57acd16044427d06bba5255818cfddd614db7666"
+          }
+        },
+        {
+          "client_id": "732653755706-skn2f3m9t3nsri8g8qkb1jdgb06k75gg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR81D9X3CP90RAhNjZH_cvKWx0l3ApqWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732653755706-skn2f3m9t3nsri8g8qkb1jdgb06k75gg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
