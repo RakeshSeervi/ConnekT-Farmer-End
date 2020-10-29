@@ -3,15 +3,21 @@ import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-class SavedTab extends StatelessWidget {
-  final FirebaseServices _firebaseServices = FirebaseServices();
+class SavedPage extends StatefulWidget {
+  @override
+  _SavedPageState createState() => _SavedPageState();
+}
+
+class _SavedPageState extends State<SavedPage> {
+
+  FirebaseServices _firebaseServices = FirebaseServices();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Stack(
+    return Scaffold(
+      body: Stack(
         children: [
           FutureBuilder<QuerySnapshot>(
             future: _firebaseServices.usersRef
@@ -31,7 +37,6 @@ class SavedTab extends StatelessWidget {
               if (snapshot.connectionState == ConnectionState.done) {
                 // Display the data inside a list view
                 return ListView(
-
                   padding: EdgeInsets.only(
                     top: 108.0,
                     bottom: 12.0,
@@ -114,7 +119,7 @@ class SavedTab extends StatelessWidget {
                                           ),
                                         ),
                                         Text(
-                                          "Size - ${document.data()['size']}",
+                                          "Weight - ${document.data()['Weight']}",
                                           style: TextStyle(
                                               fontSize: 16.0,
                                               color: Colors.black,
@@ -149,14 +154,13 @@ class SavedTab extends StatelessWidget {
             },
           ),
           CustomActionBar(
-            title: "Saved",
             hasBackArrrow: true,
-            hasProfile: false,
+            title: "Saved",
             hasSaved: false,
-
-          ),
+          )
         ],
       ),
     );
   }
+
 }

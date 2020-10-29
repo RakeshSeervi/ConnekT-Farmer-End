@@ -1,8 +1,6 @@
-
 import 'package:agri_com/tabs/profile_tab.dart';
 import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/tabs/home_tab.dart';
-import 'package:agri_com/tabs/saved_tab.dart';
 import 'package:agri_com/tabs/search_tab.dart';
 import 'package:agri_com/widgets/bottom_tabs.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  FirebaseServices _firebaseServices = FirebaseServices();
-
   PageController _tabsPageController;
   int _selectedTab = 0;
 

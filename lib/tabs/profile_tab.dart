@@ -8,12 +8,20 @@ import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class ProfileTab extends StatelessWidget {
-  final CollectionReference _userDetails =
-      FirebaseFirestore.instance.collection('name');
+class ProfileTab extends StatefulWidget{
+  @override
+  _ProfileState createState() => _ProfileState();
+}
 
+class _ProfileState extends State<ProfileTab > {
+
+
+  String _defaultImage = 'assets/images/user.png';
   FirebaseServices _firebaseServices = FirebaseServices();
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = new GoogleSignIn();
 
   @override
   Widget build(BuildContext context) {
@@ -55,110 +63,44 @@ class ProfileTab extends StatelessWidget {
                       },
                       child: Column(
                         children: [
-                          Container(
-                            child: new UserAccountsDrawerHeader(
-                              accountName: Text(
-                                  "${document.data()['username']}" ??
-                                      "Username"),
-                              accountEmail: Text(
-                                  "${document.data()['email']}" ?? "Email"),
-                              currentAccountPicture: Container(
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      height: 350.0,
-                                      child: ClipOval(
-                                        child: new SizedBox(
-                                          width: 180.0,
-                                          height: 180.0,
-                                          child: Image.network(
-                                            "${document
-                                                .data()['profilePicture']}" ??
-                                                "ProfilePicture",
-                                            fit: BoxFit.fill,
+                          Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              child: new UserAccountsDrawerHeader(
+                                accountName: Text(
+                                    "${document.data()['username']}" ??
+                                        "Username" ,
+                                  style: TextStyle(
+                                    color: Colors.black, fontSize: 14.0),
+                                ),
+                                accountEmail: Text(
+                                    "${document.data()['email']}" ?? "Email",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 15.0),
+                                ),
+
+                                currentAccountPicture: Container(
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        height: 350.0,
+                                        child: ClipOval(
+                                          child: new SizedBox(
+                                            width: 180.0,
+                                            height: 180.0,
+                                            child: Image.network(
+                                              "${document.data()['profilePicture']}" ??
+                                                  "ProfilePicture",
+                                              fit: BoxFit.fill,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              decoration: new BoxDecoration(
-                                  color: Colors.blueAccent),
-                            ),
-                          ),
-                          Container(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MyAccount(),
-                                    ));
-                              },
-                              child: ListTile(
-                                title: Text("My Account"),
-                                leading: Icon(Icons.person),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: InkWell(
-                              onTap: () {
-
-                              },
-                              child: ListTile(
-                                title: Text("My Orders"),
-                                leading: Icon(Icons.shopping_cart),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SettingsPage(),
-                                    ));
-                              },
-                              child: ListTile(
-                                title: Text("Settings"),
-                                leading: Icon(
-                                  Icons.settings,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: InkWell(
-                              onTap: () {},
-                              child: ListTile(
-                                title: Text("About"),
-                                leading: Icon(
-                                  Icons.help,
-                                  color: Colors.green,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: InkWell(
-                              onTap: () async
-                              {
-                                await FirebaseAuth.instance.signOut();
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (c) => LoginPage()),
-                                        (r) => false);
-                              },
-                              child: ListTile(
-                                title: Text("Logout"),
-                                leading: Icon(
-                                  Icons.cancel,
-                                  color: Colors.green,
-                                ),
+                                decoration:
+                                    new BoxDecoration(color: Colors.transparent),
                               ),
                             ),
                           ),
@@ -177,10 +119,96 @@ class ProfileTab extends StatelessWidget {
               );
             },
           ),
+          ListView(
+              padding: EdgeInsets.only(
+                top: 330.0,
+                bottom: 12.0,
+              ),
+              children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: Column(
+                    children: [
+                      Container(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MyAccount(),
+                                ));
+                          },
+                          child: ListTile(
+                            title: Text("My Account"),
+                            leading: Icon(Icons.person),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: InkWell(
+                          onTap: () {},
+                          child: ListTile(
+                            title: Text("My Orders"),
+                            leading: Icon(Icons.shopping_cart),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SettingsPage(),
+                                ));
+                          },
+                          child: ListTile(
+                            title: Text("Settings"),
+                            leading: Icon(
+                              Icons.settings,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: ListTile(
+                            title: Text("About"),
+                            leading: Icon(
+                              Icons.help,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: GestureDetector(
+                          onTap: () async {
+                            await FirebaseAuth.instance.signOut();
+                              await firebaseAuth.signOut();
+                              await googleSignIn.signOut();
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (c) => LoginPage()),
+                                (r) => false);
+                          },
+                          child: ListTile(
+                            title: Text("Logout"),
+                            leading: Icon(
+                              Icons.cancel,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
           CustomActionBar(
             title: "Profile",
             hasBackArrrow: false,
-            hasProfile: false,
             hasSaved: true,
           )
         ],

@@ -117,7 +117,7 @@ class _CartPageState extends State<CartPage> {
                                           ),
                                         ),
                                         Text(
-                                          "Size - ${document.data()['size']}",
+                                          "Weight - ${document.data()['Weight']}",
                                           style: TextStyle(
                                               fontSize: 16.0,
                                               color: Colors.black,

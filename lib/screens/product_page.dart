@@ -36,7 +36,7 @@ class _ProductPageState extends State<ProductPage> {
         .doc(_firebaseServices.getUserId())
         .collection("Saved")
         .doc(widget.productId)
-        .set({"size": _selectedProductSize});
+        .set({"Weight": _selectedProductSize});
   }
 
   final SnackBar _snackBar = SnackBar(
@@ -202,7 +202,6 @@ class _ProductPageState extends State<ProductPage> {
             hasBackArrrow: true,
             hasTitle: false,
             hasBackground: false,
-            hasProfile: false,
           )
         ],
       ),

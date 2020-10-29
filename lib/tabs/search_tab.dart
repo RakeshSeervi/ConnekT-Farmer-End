@@ -32,6 +32,7 @@ class _SearchTabState extends State<SearchTab> {
               ),
             )
           else
+
             FutureBuilder<QuerySnapshot>(
               future: _firebaseServices.productsRef
                   .orderBy('search_string')
@@ -89,7 +90,6 @@ class _SearchTabState extends State<SearchTab> {
           CustomActionBar(
             title: "Search",
             hasBackArrrow: false,
-            hasProfile: false,
             hasSaved: true,
           )
         ],

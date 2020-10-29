@@ -4,6 +4,7 @@ import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart';
@@ -16,6 +17,20 @@ class MyAccount extends StatefulWidget {
 }
 
 class _MyAccount extends State<MyAccount> {
+  bool _isEditingText = false;
+  TextEditingController _editingController;
+  String initialText = "Initial Text";
+  void initState() {
+    super.initState();
+    _editingController = TextEditingController(text: initialText);
+  }
+  @override
+  void dispose() {
+    _editingController.dispose();
+    super.dispose();
+  }
+
+
   final CollectionReference _userDetails =
       FirebaseFirestore.instance.collection('name');
 
@@ -23,9 +38,13 @@ class _MyAccount extends State<MyAccount> {
 
   File _image;
   String imageUrl;
+  File croppedImage;
+
+  var _autovalidate = false;
 
   @override
   Widget build(BuildContext context) {
+
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     final _formKey = GlobalKey<FormState>();
     final picker = ImagePicker();
@@ -33,15 +52,17 @@ class _MyAccount extends State<MyAccount> {
     TextEditingController _username = TextEditingController();
     String name = "";
     String email = "";
+    String profile = "";
+    String url = "";
 
-    Future getImage() async {
-      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-      setState(() {
-        _image = image;
-        print('Image Path $_image');
-      });
-    }
+
+
+
+
+
+
+
 
     Future uploadPic(BuildContext context) async {
       String fileName = basename(_image.path);
@@ -49,27 +70,58 @@ class _MyAccount extends State<MyAccount> {
           FirebaseStorage.instance.ref().child(fileName);
       StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
       StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-      String url = (await firebaseStorageRef.getDownloadURL()).toString();
+      url = (await firebaseStorageRef.getDownloadURL()).toString();
       print(url);
 
       User _user = FirebaseAuth.instance.currentUser;
       final CollectionReference userDetails =
           FirebaseFirestore.instance.collection('name');
 
-      Future _addDetails() {
+      Future _addProfile() {
         return _firebaseServices.userDetails
             .doc(_firebaseServices.getUserId())
             .collection("Details")
             .doc(_firebaseServices.getProductId())
-            .set({"email": email, "username": name, "profilePicture": url});
+            .update({"profilePicture": url});
       }
 
-      _addDetails();
+      _addProfile();
       setState(() {
         print("Profile Picture uploaded");
         Scaffold.of(context)
             .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
       });
+    }
+    Future getImage() async {
+      File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      if(image !=null){
+        croppedImage = await ImageCropper.cropImage(sourcePath: image.path,aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+            compressQuality: 100,
+            maxWidth: 700,
+            maxHeight: 700,
+            compressFormat: ImageCompressFormat.jpg,
+            androidUiSettings: AndroidUiSettings(
+              toolbarColor: Colors.deepOrange,
+              toolbarTitle: "Crop",
+              statusBarColor: Colors.deepOrange.shade900,
+              backgroundColor: Colors.white,
+            ));
+
+      }
+
+
+      setState(() {
+        _image = croppedImage;
+        print('Image Path $_image');
+      });
+      uploadPic(context);
+    }
+    Future _addUserName() async{
+      return _firebaseServices.userDetails
+          .doc(_firebaseServices.getUserId())
+          .collection("Details")
+          .doc(_firebaseServices.getProductId())
+          .update({"username": name});
     }
 
     return Scaffold(
@@ -100,25 +152,25 @@ class _MyAccount extends State<MyAccount> {
                   children: snapshot.data.docs.map((document) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductPage(
-                                productId: document.id,
-                              ),
-                            ));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => ProductPage(
+                        //         productId: document.id,
+                        //       ),
+                        //     ));
                       },
                       child: Column(
                         children: [
                           CustomActionBar(
                             title: "Profile",
-                            hasProfile: false,
                             hasBackArrrow: true,
                             hasCart: true,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
+
                               Align(
                                 alignment: Alignment.center,
                                 child: CircleAvatar(
@@ -128,7 +180,7 @@ class _MyAccount extends State<MyAccount> {
                                     child: new SizedBox(
                                       width: 155.0,
                                       height: 155.0,
-                                      child: (imageUrl != null)
+                                      child: (_image != null)
                                           ? Image.file(
                                               _image,
                                               fit: BoxFit.fill,
@@ -151,6 +203,7 @@ class _MyAccount extends State<MyAccount> {
                                   ),
                                   onPressed: () {
                                     getImage();
+
                                   },
                                 ),
                               ),
@@ -159,95 +212,132 @@ class _MyAccount extends State<MyAccount> {
                           SizedBox(
                             height: 20.0,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(left: 13.0),
-                              ),
-                              Text("Name :",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.bold)),
-                              Container(
-                                width: 320.0,
-                                height: 80.0,
-                                child: TextField(
-                                  controller: _username,
-                                  decoration: InputDecoration(
-                                    // enabledBorder: OutlineInputBorder(
-                                    //   borderSide: BorderSide(color : Colors.blue),
-                                    //   borderRadius: BorderRadius.all(Radius.circular(10))
-                                    // ),
-                                    // focusedBorder: OutlineInputBorder(
-                                    //   borderSide: BorderSide(color: Colors.red),
-                                    //   borderRadius: BorderRadius.all(Radius.circular(30))
-                                    // ),
-                                    hintText:
-                                        " ${document.data()['username']}" ??
-                                            "Name",
-                                  ),
-                                ),
-                                padding: EdgeInsets.all(20),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              RaisedButton(
-                                color: Colors.black,
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                elevation: 4.0,
-                                splashColor: Colors.blueGrey,
-                                child: Text(
-                                  'Cancel',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16.0),
-                                ),
-                              ),
-                              RaisedButton(
-                                color: Colors.black,
-                                onPressed: () {
-                                  email =
-                                      "${document.data()['email']}" ?? "Email";
-                                  name = _username.text;
-                                  uploadPic(context);
-                                },
-                                elevation: 4.0,
-                                splashColor: Colors.blueGrey,
-                                child: Text(
-                                  'Save',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16.0),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          Container(
-                            margin: EdgeInsets.all(13.0),
-                            child: Row(
+                          Form(
+                            key: _formKey,
+                            autovalidate: _autovalidate,
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                Text('Email :',
-                                    style: TextStyle(
+                                Padding(
+                                  padding: EdgeInsets.only(left: 00),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10.0, bottom: 10, left: 23, right: 23),
+                                  child: TextFormField(
+                                    controller: _username,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                        hintText: "${document.data()['username']}" ??
+                                            "Name",
+                                      prefixIcon: Icon(Icons.account_circle),
+                                    ),
+                                    validator: (value) {
+                                      if (value.isEmpty)
+                                        return 'Username cannot be empty!';
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.all(25.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text('Email :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold)),
+                                      Text("  ${document.data()['email']}" ?? "Email",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18.0,
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 250.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18.0),
+                                        side: BorderSide(color: Colors.black)),
                                         color: Colors.black,
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold)),
-                                Text("  ${document.data()['email']}" ?? "Email",
-                                    style: TextStyle(
+                                        textColor: Colors.red,
+                                    padding: EdgeInsets.all(8.0),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          'Cancel',
+                                            style: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                        ),
+                                      ),
+                                    FlatButton(
+                                        shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(18.0),
+                                        side: BorderSide(color: Colors.black)),
                                       color: Colors.black,
-                                      fontSize: 18.0,
-                                    )),
+                                      textColor: Colors.red,
+                                        onPressed: () {
+                                          if (_formKey.currentState.validate()){
+                                            name = _username.text;
+                                            _addUserName();
+                                            setState(() {
+                                              print("Profile Picture uploaded");
+                                              Scaffold.of(context)
+                                                  .showSnackBar(SnackBar(content: Text('UserName Changed')));
+                                            });
+
+                                          }
+                                          else
+                                            setState(() {
+                                              _autovalidate = true;
+                                              Future<void> _alertDialogBuilder(String error) async {
+                                                return showDialog(
+                                                    context: context,
+                                                    barrierDismissible: false,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        title: Text("Error"),
+                                                        content: Container(
+                                                          child: Text(error),
+                                                        ),
+                                                        actions: [
+                                                          FlatButton(
+                                                            child: Text("Close Dialog"),
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                          )
+                                                        ],
+                                                      );
+                                                    });
+                                              }
+                                              _alertDialogBuilder("Username Empty");
+                                            });
+                                        },
+                                        child: Text(
+                                          'Save',
+                                          style: TextStyle(
+                                              color: Colors.white, fontSize: 16.0),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+
                               ],
                             ),
                           ),
@@ -269,5 +359,11 @@ class _MyAccount extends State<MyAccount> {
         ],
       ),
     );
+
   }
-}
+
+  }
+
+
+
+

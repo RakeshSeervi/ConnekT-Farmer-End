@@ -35,7 +35,7 @@ class _RegisterState extends State<Register> {
   TextEditingController _password = TextEditingController();
   TextEditingController _repeatPassword = TextEditingController();
   TextEditingController _profilePicture = TextEditingController();
-  String profilePic;
+  String profilePic ;
 
   var _autovalidate = false;
 
@@ -47,24 +47,26 @@ class _RegisterState extends State<Register> {
       body: Stack(
         children: [
           Container(
-            padding: EdgeInsets.all(114),
-            child: Text(
-              "Create Account",
-              textAlign: TextAlign.center,
-              style: Constants.boldHeading,
-            ),
-          ),
-          Container(
             padding: EdgeInsets.only(top: 100.0, left: 150.0),
           ),
           Column(
             children: [
               Flexible(
-
                 child: SingleChildScrollView(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 110.0, bottom: 10, left: 23, right: 23),
+                        child: Container(
+                          child: Text(
+                            "Create Account",
+                            textAlign: TextAlign.center,
+                            style: Constants.boldHeading,
+                          ),
+                        ),
+                      ),
                       Form(
                         key: _formKey,
                         autovalidate: _autovalidate,
@@ -72,7 +74,7 @@ class _RegisterState extends State<Register> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                  top: 200.0, bottom: 10, left: 23, right: 23),
+                                  top: 25.0, bottom: 10, left: 23, right: 23),
                               child: TextFormField(
                                 keyboardType: TextInputType.emailAddress,
                                 controller: _email,
@@ -195,12 +197,14 @@ class _RegisterState extends State<Register> {
                       Padding(
                         padding: const EdgeInsets.only(
                             top: 8.0, bottom: 8, left: 16, right: 16),
-                        child: FloatingActionButton(
-                            backgroundColor: Colors.white,
+                        child: IconButton(
+                            iconSize: 80,
                             onPressed: () {
                               handleGoogleSignIn();
                             },
-                            child: Image.asset('assets/images/google.jpg',)),
+                            icon: Image.asset(
+                              'assets/images/google.jpg',
+                            )),
                       ),
                     ],
                   ),
@@ -236,7 +240,6 @@ class _RegisterState extends State<Register> {
               ),
             ),
           ),
-
         ],
       ),
     );
@@ -258,15 +261,19 @@ class _RegisterState extends State<Register> {
 
     if (firebaseUser != null) {
       final QuerySnapshot result = await FirebaseFirestore.instance
-          .collection('User')
+          .collection('name')
+          .doc(firebaseUser.uid)
+          .collection("Details")
           .where('email', isEqualTo: firebaseUser.email)
           .get();
       final List<DocumentSnapshot> documents = result.docs;
 
       if (documents.length == 0) {
         FirebaseFirestore.instance
-            .collection('User')
+            .collection('name')
             .doc(firebaseUser.uid)
+            .collection("Details")
+            .doc(_firebaseServices.getProductId())
             .set({
           "email": firebaseUser.email,
           "username": firebaseUser.displayName,
@@ -316,13 +323,12 @@ class _RegisterState extends State<Register> {
 
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-          email: _email.text, password: _password.text);
+              email: _email.text, password: _password.text);
       profilePic =
-      "https://miro.medium.com/max/700/1*KUy_KKExZrSpBuv9XfyBgA.png";
+      "https://image.shutterstock.com/image-vector/vector-simple-male-profile-icon-260nw-1388357696.jpg";
 
-
-      final CollectionReference userDetails = FirebaseFirestore.instance
-          .collection('name');
+      final CollectionReference userDetails =
+          FirebaseFirestore.instance.collection('name');
 
       User _user = FirebaseAuth.instance.currentUser;
       Future _addDetails() {
@@ -336,6 +342,7 @@ class _RegisterState extends State<Register> {
           "profilePicture": profilePic,
         });
       }
+
       _addDetails();
       Fluttertoast.showToast(
           msg: "Successfully registered!",

@@ -1,8 +1,8 @@
 import 'package:agri_com/constants.dart';
+import 'package:agri_com/screens/saved_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:agri_com/screens/cart_page.dart';
 import 'package:agri_com/services/firebase_services.dart';
-import 'package:agri_com/tabs/saved_tab.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,6 @@ class CustomActionBar extends StatelessWidget {
   final bool hasBackArrrow;
   final bool hasTitle;
   final bool hasBackground;
-  final bool hasProfile;
   final bool hasCart;
   final bool hasSaved;
 
@@ -20,7 +19,6 @@ class CustomActionBar extends StatelessWidget {
       this.hasBackArrrow,
       this.hasTitle,
       this.hasBackground,
-      this.hasProfile,
       this.hasCart,
       this.hasSaved});
 
@@ -36,7 +34,6 @@ class CustomActionBar extends StatelessWidget {
     bool _hasBackArrow = hasBackArrrow ?? false;
     bool _hasTitle = hasTitle ?? true;
     bool _hasBackground = hasBackground ?? true;
-    bool _hasProfile = hasProfile ?? true;
     bool _hasCart = hasCart ?? true;
     bool _hasSaved = hasSaved ?? true;
 
@@ -103,7 +100,7 @@ class CustomActionBar extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => SavedTab(),
+                          builder: (context) => SavedPage(),
                         ));
                       },
                       child: Container(
@@ -116,11 +113,11 @@ class CustomActionBar extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Image(
                           image: AssetImage(
-                              "assets/images/tab_saved.png"
+                              "assets/images/heart.png"
                           ),
                           color: Colors.black,
-                          width: 16.0,
-                          height: 16.0,
+                          width: 20.0,
+                          height: 20.0,
                         ),
                       ),
                     ),

@@ -22,8 +22,10 @@ class _BottomTabsState extends State<BottomTabs> {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12.0),
-              topRight: Radius.circular(12.0)
+              topLeft: Radius.circular(50.0),
+              topRight: Radius.circular(50.0),
+              bottomLeft: Radius.circular(50),
+              bottomRight: Radius.circular(50)
           ),
           boxShadow: [
             BoxShadow(
