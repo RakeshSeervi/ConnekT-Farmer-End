@@ -6,11 +6,7 @@
 
 **Make sure your code works before submitting it :D**
 
-<details>
-
-<summary>
 <h2 style="display:inline;">Set it up locally </h2>
-</summary>
 
 ### Clone it
 
@@ -43,12 +39,10 @@ $ git checkout main
 
 # Reset local `main` branch to match `upstream` repository's `main` branch
 $ git reset --hard origin/main
-
+```
 ### You're Ready to Go
 
 Once you have completed these steps, you are ready to start contributing by checking the Issues and creating [pull requests](https://github.com/GameofSource-GFG/Android-Development/pulls).
-
-</details>
 
 ---
 
@@ -109,8 +103,6 @@ Now, Push your awesome work to our remote repository using
 ```sh
 # To push your work to your remote repository
 $ git push -u origin development
-#Example
-#$ git push -u origin <YOUR GITHUB USERNAME>/<ISSUE NUMBER>
 ```
 
 Finally, go to our repository in browser, change the branch to `development` and click on `compare and pull requests`.
