@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class BottomTabs extends StatefulWidget {
@@ -39,21 +38,21 @@ class _BottomTabsState extends State<BottomTabs> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           BottomTabBtn(
-            imagePath: "assets/images/tab_home.png",
+            icon: Icons.home_outlined,
             selected: _selectedTab == 0 ? true : false,
             onPressed: () {
               widget.tabPressed(0);
             },
           ),
           BottomTabBtn(
-            imagePath: "assets/images/tab_search.png",
+            icon: Icons.storefront_outlined,
             selected: _selectedTab == 1 ? true : false,
             onPressed: () {
               widget.tabPressed(1);
             },
           ),
           BottomTabBtn(
-            imagePath: "assets/images/tab_profile.png",
+            icon: Icons.account_circle_outlined,
             selected: _selectedTab == 2 ? true : false,
             onPressed: () {
               widget.tabPressed(2);
@@ -66,10 +65,11 @@ class _BottomTabsState extends State<BottomTabs> {
 }
 
 class BottomTabBtn extends StatelessWidget {
-  final String imagePath;
+  final IconData icon;
   final bool selected;
   final Function onPressed;
-  BottomTabBtn({this.imagePath, this.selected, this.onPressed});
+
+  BottomTabBtn({this.icon, this.selected, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -79,23 +79,18 @@ class BottomTabBtn extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         padding: EdgeInsets.symmetric(
-          vertical: 28.0,
+          vertical: 20.0,
           horizontal: 24.0,
         ),
         decoration: BoxDecoration(
             border: Border(
                 top: BorderSide(
-                  color: _selected ? Theme.of(context).accentColor : Colors.transparent,
-                  width: 2.0,
-                )
-            )
-        ),
-        child: Image(
-          image: AssetImage(
-              imagePath ?? "assets/images/tab_home.png"
-          ),
-          width: 22.0,
-          height: 22.0,
+          color: _selected ? Theme.of(context).accentColor : Colors.transparent,
+          width: 2.0,
+        ))),
+        child: Icon(
+          icon,
+          size: 32.0,
           color: _selected ? Theme.of(context).accentColor : Colors.black,
         ),
       ),

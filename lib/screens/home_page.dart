@@ -1,7 +1,6 @@
-import 'package:agri_com/tabs/profile_tab.dart';
-import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/tabs/home_tab.dart';
-import 'package:agri_com/tabs/search_tab.dart';
+import 'package:agri_com/tabs/profile_tab.dart';
+import 'package:agri_com/tabs/store_tab.dart';
 import 'package:agri_com/widgets/bottom_tabs.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +41,7 @@ class _HomePageState extends State<HomePage> {
               },
               children: [
                 HomeTab(),
-                SearchTab(),
+                StoreTab(),
                 ProfileTab(),
               ],
             ),
