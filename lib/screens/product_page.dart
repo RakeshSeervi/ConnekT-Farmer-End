@@ -1,4 +1,7 @@
 import 'package:agri_com/constants.dart';
+import 'package:agri_com/models/fruits.dart';
+import 'package:agri_com/models/product.dart';
+import 'package:agri_com/models/vegetables.dart';
 import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:agri_com/widgets/image_swipe.dart';
@@ -21,7 +24,7 @@ class _ProductPageState extends State<ProductPage> {
 
   FirebaseServices _firebaseServices = FirebaseServices();
 
-  String _selectedProductSize = "0";
+  double _selectedProductSize;
 
   Future _addToCart() {
     return _firebaseServices.usersRef
@@ -63,19 +66,25 @@ class _ProductPageState extends State<ProductPage> {
               }
 
               if (snapshot.connectionState == ConnectionState.done) {
-                // Firebase Document Data Map
-                Map<String, dynamic> documentData = snapshot.data.data();
+                Product product = Product.fromSnapshot(snapshot.data);
+                List productSizes;
 
-                // List of images
-                List imageList = documentData['images'];
-                List productSizes = documentData['weight'];
+                if (product.category == 'Fruits')
+                  productSizes = Fruits[product.subCategory]['weighted']
+                      ? Fruits[product.subCategory]['weights']
+                      : [1];
+                else
+                  productSizes = Vegetables[product.subCategory]['weighted']
+                      ? Vegetables[product.subCategory]['weights']
+                      : [1];
+
                 _selectedProductSize = productSizes[0];
 
                 return ListView(
                   padding: EdgeInsets.all(0),
                   children: [
                     ImageSwipe(
-                      imageList: imageList,
+                      imageList: product.images,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -85,7 +94,7 @@ class _ProductPageState extends State<ProductPage> {
                         bottom: 4.0,
                       ),
                       child: Text(
-                        "${documentData['name']}",
+                        "${product.name}",
                         style: Constants.boldHeading,
                       ),
                     ),
@@ -95,7 +104,7 @@ class _ProductPageState extends State<ProductPage> {
                         horizontal: 24.0,
                       ),
                       child: Text(
-                        "\Rs ${documentData['price']}",
+                        "\Rs ${product.price}",
                         style: TextStyle(
                           fontSize: 18.0,
                           color: Theme.of(context).accentColor,
@@ -109,7 +118,7 @@ class _ProductPageState extends State<ProductPage> {
                         horizontal: 24.0,
                       ),
                       child: Text(
-                        "${documentData['desc']}",
+                        "${product.description}",
                         style: TextStyle(
                           fontSize: 16.0,
                         ),
