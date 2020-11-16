@@ -16,8 +16,13 @@ class MyApp extends StatelessWidget {
           textTheme: GoogleFonts.poppinsTextTheme(
             Theme.of(context).textTheme,
           ),
-          accentColor: Color(0xFFFF1E00)
-      ),
+          appBarTheme: AppBarTheme(color: Colors.black),
+          inputDecorationTheme: InputDecorationTheme(
+              labelStyle: TextStyle(color: Color(0xFFFF1E00)),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFFFF1E00)))),
+          accentColor: Color(0xFFFF1E00)),
       home: LandingPage(),
     );
   }

@@ -1,4 +1,3 @@
-const String NAME = 'name';
 const String WEIGHTED = 'weighted';
 const String WEIGHTS = 'weights';
 const String MIN_WEIGHT = 'min-weight';
@@ -7,201 +6,169 @@ const String IMAGE_PATH = 'assets/images/vegetables/';
 const List WEIGHT1 = [0.5, 1, 5];
 const List WEIGHT2 = [0.25, 0.5, 1];
 
-const List Fruits = [
-  {
-    NAME: 'Onion',
+const Map<String, Map<String, dynamic>> Vegetables = {
+  'Onion': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Tomato',
+  'Tomato': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Potato',
+  'Potato': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Lemon',
+  'Lemon': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Lady Finger [Bhindi]',
+  'Lady Finger [Bhindi]': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Cucumber',
+  'Cucumber': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Bottle Gourd',
+  'Bottle Gourd': {
     WEIGHTED: false,
     MIN_WEIGHT: 0.6,
     MAX_WEIGHT: 0.9,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Ginger',
+  'Ginger': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Brinjal',
+  'Brinjal': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Green Brinjal',
+  'Green Brinjal': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Green Chilli',
+  'Green Chilli': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Cabbage',
+  'Cabbage': {
     WEIGHTED: false,
     MIN_WEIGHT: 0.5,
     MAX_WEIGHT: 0.8,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Garlic',
+  'Garlic': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'French beans',
+  'French beans': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Broad beans',
+  'Broad beans': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Beetroot',
+  'Beetroot': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Snake Gourd',
+  'Snake Gourd': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Pumpkin',
+  'Pumpkin': {
     WEIGHTED: false,
     MIN_WEIGHT: 1,
     MAX_WEIGHT: 1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Cluster beans',
+  'Cluster beans': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Cauliflower',
+  'Cauliflower': {
     WEIGHTED: false,
     MIN_WEIGHT: 0.4,
     MAX_WEIGHT: 0.6,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Mushroom',
+  'Mushroom': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Ridge Gourd',
+  'Ridge Gourd': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Bitter Gourd',
+  'Bitter Gourd': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Spring Onion',
+  'Spring Onion': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Broccoli',
+  'Broccoli': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Capsicum',
+  'Capsicum': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Radish',
+  'Radish': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Tamarind',
+  'Tamarind': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Coriander',
+  'Coriander': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Spinach',
+  'Spinach': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Mint Leaves [Pudina]',
+  'Mint Leaves [Pudina]': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Fenugreek [Methi]',
+  'Fenugreek [Methi]': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-];
+};

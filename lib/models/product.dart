@@ -2,17 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Product {
   static const String NAME = 'name';
-  static const String DESCRIPTION = 'desc';
+  static const String DESCRIPTION = 'description';
   static const String IMAGES = 'images';
   static const String PRICE = 'price';
-  static const String WEIGHT = 'weight';
+  static const String CATEGORY = 'category';
+  static const String SUB_CATEGORY = 'sub-category';
+  static const String SELLER_NAME = 'seller-name';
+  static const String SELLER_ID = 'seller-id';
 
   String _id = '';
   String _name = '';
   String _description = '';
   List _images = [];
   int _price = 0;
-  List _weights = [];
+  String _category = '';
+  String _subCategory = '';
+  String _sellerName = '';
+  String _sellerId = '';
 
   String get id => _id;
 
@@ -24,7 +30,13 @@ class Product {
 
   int get price => _price;
 
-  List get weights => _weights;
+  String get category => _category;
+
+  String get subCategory => _subCategory;
+
+  String get sellerId => _sellerId;
+
+  String get sellerName => _sellerName;
 
   Product() {
     _images = [
@@ -38,6 +50,9 @@ class Product {
     _description = snapshot.data()[DESCRIPTION];
     _images = snapshot.data()[IMAGES];
     _price = snapshot.data()[PRICE];
-    _weights = snapshot.data()[WEIGHT];
+    _category = snapshot.data()[CATEGORY];
+    _subCategory = snapshot.data()[SUB_CATEGORY];
+    _sellerId = snapshot.data()[SELLER_ID];
+    _sellerName = snapshot.data()[SELLER_NAME];
   }
 }

@@ -1,4 +1,3 @@
-const String NAME = 'name';
 const String WEIGHTED = 'weighted';
 const String WEIGHTS = 'weights';
 const String MIN_WEIGHT = 'min-weight';
@@ -7,130 +6,110 @@ const String IMAGE_PATH = 'assets/images/fruits/';
 const List WEIGHT1 = [0.5, 1, 5];
 const List WEIGHT2 = [0.25, 0.5, 1];
 
-const List Fruits = [
-  {
-    NAME: 'Apple',
+const Map<String, Map<String, dynamic>> Fruits = {
+  'Apple': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Mango',
+  'Mango': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Banana',
+  'Banana': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Raw Banana',
+  'Raw Banana': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Papaya',
+  'Papaya': {
     WEIGHTED: false,
     MIN_WEIGHT: 0.7,
     MAX_WEIGHT: 1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Brown Coconut',
+  'Brown Coconut': {
     WEIGHTED: false,
     MIN_WEIGHT: 0.4,
     MAX_WEIGHT: 0.8,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Sweet Lime [Mosambi]',
+  'Sweet Lime [Mosambi]': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Pomegranate',
+  'Pomegranate': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Watermelon',
+  'Watermelon': {
     WEIGHTED: false,
     MIN_WEIGHT: 1.25,
     MAX_WEIGHT: 2.25,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Kiwi',
+  'Kiwi': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Pineapple',
+  'Pineapple': {
     WEIGHTED: false,
     MIN_WEIGHT: 0.8,
     MAX_WEIGHT: 1.2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Avocado',
+  'Avocado': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Muskmelon',
+  'Muskmelon': {
     WEIGHTED: false,
     MIN_WEIGHT: 0.6,
     MAX_WEIGHT: 1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Custard Apple',
+  'Custard Apple': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Gooseberry [Amla]',
+  'Gooseberry [Amla]': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Plums',
+  'Plums': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT2,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Pear',
+  'Pear': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Sapota [Chickoo]',
+  'Sapota [Chickoo]': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Orange',
+  'Orange': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-  {
-    NAME: 'Gauva',
+  'Gauva': {
     WEIGHTED: true,
     WEIGHTS: WEIGHT1,
     IMAGE_PATH: IMAGE_PATH + '',
   },
-];
+};

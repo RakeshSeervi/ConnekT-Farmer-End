@@ -1,64 +1,67 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:agri_com/models/fruits.dart';
+import 'package:agri_com/models/vegetables.dart';
+import 'package:agri_com/services/product_service.dart';
+import 'package:agri_com/widgets/category_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:uuid/uuid.dart';
 
 class ProductForm extends StatefulWidget {
   @override
   _ProductFormState createState() => _ProductFormState();
 }
 
-class _ProductFormState extends State<ProductForm> {
-  var storage = FirebaseStorage.instance;
-  var firestore = FirebaseFirestore.instance;
+class _ProductFormState extends State<ProductForm> with WidgetsBindingObserver {
   bool isLoading = false;
-  Uuid uuid = Uuid();
+
+  final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
   TextEditingController productName = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController description = TextEditingController();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _autovalidate = false;
+  TextEditingController subCategory = TextEditingController();
+  String category = 'Fruits';
 
-  File _image;
-  final picker = ImagePicker();
-
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
+  switchCategory(val) {
     setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
+      category = val;
+      subCategory.text = '';
     });
   }
 
-  List<DropdownMenuItem> category = [
-    DropdownMenuItem(
-      value: 'Fruits',
-      child: Text(
-        'Fruits',
-        style: TextStyle(color: Colors.black54),
-      ),
-    ),
-    DropdownMenuItem(
-      value: 'Vegetables',
-      child: Text(
-        'Vegetables',
-        style: TextStyle(color: Colors.black54),
-      ),
-    ),
-  ];
-  String selectedCategory = 'Fruits';
+  Map<String, List<String>> items = {'Fruits': [], 'Vegetables': []};
+
+  FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    items['Fruits'].addAll(Fruits.keys.toList(growable: false));
+    items['Vegetables'].addAll(Vegetables.keys.toList(growable: false));
+    _focusNode = FocusNode();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    final value = WidgetsBinding.instance.window.viewInsets.bottom;
+    if (value == 0) {
+      _focusNode.unfocus();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,122 +74,138 @@ class _ProductFormState extends State<ProductForm> {
           padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
           child: ListView(
             children: [
-              Form(
-                key: _formKey,
-                autovalidate: _autovalidate,
+              FormBuilder(
+                key: _fbKey,
+                autovalidateMode: _autovalidateMode,
                 child: Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 300,
-                            width: 300,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.blue, width: 3),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            child: _image != null
-                                ? Image.file(
-                                    _image,
-                                    fit: BoxFit.fill,
-                                  )
-                                : Center(child: Text('Product image preview')),
-                          ),
-                          FloatingActionButton(
-                            onPressed: getImage,
-                            tooltip: 'Pick Image',
-                            child: Icon(Icons.photo),
-                          ),
+                      child: FormBuilderImagePicker(
+                        attribute: 'images',
+                        decoration: const InputDecoration(
+                          labelText: 'Images',
+                        ),
+                        defaultImage: NetworkImage(
+                            'https://cohenwoodworking.com/wp-content/uploads/2016/09/image-placeholder-500x500.jpg'),
+                        maxImages: 3,
+                        iconColor: Colors.red,
+                        // readOnly: true,
+                        validators: [
+                          FormBuilderValidators.required(),
+                          (images) {
+                            if (images.length < 2) {
+                              return 'Two or more images required.';
+                            }
+                            return null;
+                          }
                         ],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
+                      child: FormBuilderTextField(
+                        attribute: 'name',
                         controller: productName,
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Product name'),
-                        validator: (value) {
-                          if (value.isEmpty)
-                            return "Product name cannot be empty!";
-                          return null;
-                        },
+                        validators: [FormBuilderValidators.required()],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
+                      child: FormBuilderTextField(
+                        attribute: 'price',
                         controller: price,
                         decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Price',
-                            prefix: Text('Rs ')),
+                          labelText: 'Price per unit or kg',
+                          prefix: Text('Rs '),
+                        ),
+                        valueTransformer: (text) {
+                          return text == null ? null : num.tryParse(text);
+                        },
+                        validators: [
+                          FormBuilderValidators.required(),
+                          FormBuilderValidators.numeric(),
+                              (value) {
+                            return num.tryParse(value) == 0
+                                ? 'Price has to be greater than 0'
+                                : null;
+                          }
+                        ],
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
-                        validator: (value) {
-                          if (num.tryParse(value) == 0 || value.isEmpty)
-                            return 'Product price cannot be zero!';
-                          return null;
-                        },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
+                      child: FormBuilderTextField(
+                        attribute: 'description',
                         controller: description,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
                           labelText: 'Description',
                         ),
+                        focusNode: _focusNode,
                         minLines: 3,
-                        maxLines: 10,
-                        validator: (value) {
-                          if (value.isEmpty)
-                            return "Description cannot be empty!";
-                          return null;
-                        },
+                        maxLines: null,
+                        validators: [FormBuilderValidators.required()],
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Category:  ',
-                            style:
-                                TextStyle(fontSize: 20, color: Colors.black54),
-                          ),
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton(
-                                      iconEnabledColor: Colors.grey,
-                                      value: selectedCategory,
-                                      items: category,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedCategory = value;
-                                        });
-                                      }),
-                                ),
-                              ),
-                            ),
-                          ),
+                      child: FormBuilderRadioGroup(
+                        wrapAlignment: WrapAlignment.spaceAround,
+                        attribute: 'category',
+                        decoration:
+                        const InputDecoration(labelText: 'Category'),
+                        onChanged: (val) {
+                          switchCategory(val);
+                        },
+                        initialValue: 'Fruits',
+                        options: [
+                          FormBuilderFieldOption(
+                              value: 'Fruits', child: Text('Fruits')),
+                          FormBuilderFieldOption(
+                              value: 'Vegetables', child: Text('Vegetables')),
                         ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FormBuilderCustomField(
+                        attribute: 'sub-category',
+                        validators: [FormBuilderValidators.required()],
+                        formField: FormField(
+                          builder: (FormFieldState<dynamic> field) {
+                            return InputDecorator(
+                              decoration: InputDecoration(
+                                labelText: 'Sub-category',
+                                errorText: field.errorText,
+                              ),
+                              child: GestureDetector(
+                                child: subCategory.text != ''
+                                    ? Text(subCategory.text)
+                                    : Text('Select sub-category '),
+                                onTap: () async {
+                                  String res = await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return SubCategoryDialog(
+                                            items: items[category]);
+                                      });
+                                  setState(() {
+                                    subCategory.text = res;
+                                  });
+                                  field.didChange(subCategory.text);
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                     Padding(
@@ -194,38 +213,34 @@ class _ProductFormState extends State<ProductForm> {
                       child: Container(
                         width: double.infinity,
                         child: RaisedButton(
-                          color: Colors.blue,
+                          color: Color(0x99FF1E00),
                           onPressed: () async {
-                            if (_formKey.currentState.validate()) {
+                            setState(() {
+                              _autovalidateMode =
+                                  AutovalidateMode.onUserInteraction;
+                            });
+                            if (_fbKey.currentState.saveAndValidate()) {
                               setState(() {
-                                _autovalidate = true;
                                 isLoading = true;
                               });
-                              StorageTaskSnapshot snapshot = await storage
-                                  .ref()
-                                  .child("images/${uuid.v1()}")
-                                  .putFile(_image)
-                                  .onComplete;
-                              if (snapshot.error == null) {
-                                final String downloadUrl =
-                                    await snapshot.ref.getDownloadURL();
-                                firestore.collection('product').add({
-                                  "name": productName.text,
-                                  "price": num.tryParse(price.text),
-                                  "images": [downloadUrl],
-                                  "category": selectedCategory,
-                                  "desc": description.text
-                                });
-                                Fluttertoast.showToast(
-                                    msg: 'Product is up now! :)');
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: "Error: ${snapshot.error.toString()}");
-                              }
+
+                              Map values = _fbKey.currentState.value;
+
+                              bool res = await ProductService.addProduct(
+                                  values);
+
                               setState(() {
                                 isLoading = false;
                               });
-                              Navigator.of(context).pop();
+
+                              String msg = res == true
+                                  ? 'Product added succesfully'
+                                  : 'Failed to add product';
+
+                              Fluttertoast.showToast(msg: msg);
+
+                              if (res == true)
+                                Navigator.of(context).pop();
                             }
                           },
                           child: Text(
