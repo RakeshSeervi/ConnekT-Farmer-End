@@ -9,6 +9,7 @@ class Product {
   static const String SUB_CATEGORY = 'sub-category';
   static const String SELLER_NAME = 'seller-name';
   static const String SELLER_ID = 'seller-id';
+  static const String AVAILABLE = 'available';
 
   String _id = '';
   String _name = '';
@@ -19,6 +20,7 @@ class Product {
   String _subCategory = '';
   String _sellerName = '';
   String _sellerId = '';
+  bool _available = true;
 
   String get id => _id;
 
@@ -38,6 +40,8 @@ class Product {
 
   String get sellerName => _sellerName;
 
+  bool get available => _available;
+
   Product() {
     _images = [
       'https://firebasestorage.googleapis.com/v0/b/agri-com.appspot.com/o/add.png?alt=media&token=b72ff0c8-f3c5-4113-8d5c-0e2237972471'
@@ -54,5 +58,6 @@ class Product {
     _subCategory = snapshot.data()[SUB_CATEGORY];
     _sellerId = snapshot.data()[SELLER_ID];
     _sellerName = snapshot.data()[SELLER_NAME];
+    _available = snapshot.data()[AVAILABLE];
   }
 }

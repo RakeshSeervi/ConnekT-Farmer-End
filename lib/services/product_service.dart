@@ -17,6 +17,7 @@ class ProductService {
   static const String SUB_CATEGORY = 'sub-category';
   static const String SELLER_NAME = 'seller-name';
   static const String SELLER_ID = 'seller-id';
+  static const String AVAILABLE = 'available';
 
   static Future<bool> addProduct(Map data) async {
     List<String> downloadableUrls = [];
@@ -38,6 +39,7 @@ class ProductService {
       SUB_CATEGORY: data[SUB_CATEGORY],
       SELLER_ID: _auth.currentUser.uid,
       SELLER_NAME: _auth.currentUser.displayName,
+      AVAILABLE: true,
     }).then((value) => value != null);
   }
 
