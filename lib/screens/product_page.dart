@@ -24,7 +24,7 @@ class _ProductPageState extends State<ProductPage> {
 
   FirebaseServices _firebaseServices = FirebaseServices();
 
-  double _selectedProductSize;
+  String _selectedProductSize;
 
   Future _addToCart() {
     return _firebaseServices.usersRef
@@ -78,7 +78,7 @@ class _ProductPageState extends State<ProductPage> {
                       ? Vegetables[product.subCategory]['weights']
                       : [1];
 
-                _selectedProductSize = productSizes[0];
+                _selectedProductSize = productSizes[0].toString();
 
                 return ListView(
                   padding: EdgeInsets.all(0),
