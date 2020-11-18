@@ -1,4 +1,3 @@
-import 'package:agri_com/constants.dart';
 import 'package:agri_com/models/product.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:agri_com/widgets/product_grid.dart';
@@ -22,6 +21,7 @@ class _StoreTabState extends State<StoreTab> {
       child: Stack(
         children: [
           StreamBuilder(
+            initialData: null,
             stream: _productsRef
                 .where("seller-id", isEqualTo: user.uid)
                 .snapshots(),
@@ -112,7 +112,10 @@ class CustomisedView extends StatelessWidget {
           padding: const EdgeInsets.only(left: 32.0),
           child: Text(
             'Active',
-            style: Constants.regularDarkText,
+            style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w600,
+                color: Colors.green),
           ),
         ),
         GridView.count(
@@ -133,28 +136,32 @@ class CustomisedView extends StatelessWidget {
           padding: const EdgeInsets.only(left: 32.0),
           child: Text(
             'Inactive',
-            style: Constants.regularDarkText,
+            style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.red,
+            ),
           ),
         ),
         inactive.length > 0
             ? GridView.count(
-          crossAxisCount: 2,
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          children: inactive.map((product) {
-            if (product != null)
-              return ProductGrid(
-                title: product.name,
-                imageUrl: product.images[0],
-                price: "Rs${product.price}",
-                productId: product.id,
-              );
-          }).toList(),
-        )
+                crossAxisCount: 2,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                children: inactive.map((product) {
+                  if (product != null)
+                    return ProductGrid(
+                      title: product.name,
+                      imageUrl: product.images[0],
+                      price: "Rs${product.price}",
+                      productId: product.id,
+                    );
+                }).toList(),
+              )
             : Padding(
-          padding: const EdgeInsets.only(left: 32.0),
-          child: Text('No inactive products'),
-        ),
+                padding: const EdgeInsets.only(left: 32.0),
+                child: Text('No inactive products'),
+              ),
       ],
     );
   }
