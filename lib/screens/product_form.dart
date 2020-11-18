@@ -128,7 +128,7 @@ class _ProductFormState extends State<ProductForm> with WidgetsBindingObserver {
                         validators: [
                           FormBuilderValidators.required(),
                           FormBuilderValidators.numeric(),
-                              (value) {
+                          (value) {
                             return num.tryParse(value) == 0
                                 ? 'Price has to be greater than 0'
                                 : null;
@@ -161,7 +161,7 @@ class _ProductFormState extends State<ProductForm> with WidgetsBindingObserver {
                         wrapAlignment: WrapAlignment.spaceAround,
                         attribute: 'category',
                         decoration:
-                        const InputDecoration(labelText: 'Category'),
+                            const InputDecoration(labelText: 'Category'),
                         onChanged: (val) {
                           switchCategory(val);
                         },
@@ -226,8 +226,8 @@ class _ProductFormState extends State<ProductForm> with WidgetsBindingObserver {
 
                               Map values = _fbKey.currentState.value;
 
-                              bool res = await ProductService.addProduct(
-                                  values);
+                              bool res =
+                              await ProductService.addProduct(values);
 
                               setState(() {
                                 isLoading = false;
@@ -239,8 +239,7 @@ class _ProductFormState extends State<ProductForm> with WidgetsBindingObserver {
 
                               Fluttertoast.showToast(msg: msg);
 
-                              if (res == true)
-                                Navigator.of(context).pop();
+                              if (res == true) Navigator.of(context).pop();
                             }
                           },
                           child: Text(

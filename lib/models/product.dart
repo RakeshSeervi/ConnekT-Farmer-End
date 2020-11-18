@@ -42,7 +42,7 @@ class Product {
 
   bool get available => _available;
 
-  Product.fromSnapshot(QueryDocumentSnapshot snapshot) {
+  Product.fromSnapshot(DocumentSnapshot snapshot) {
     _id = snapshot.id;
     _name = snapshot.data()[NAME];
     _description = snapshot.data()[DESCRIPTION];
