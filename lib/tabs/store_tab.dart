@@ -1,8 +1,9 @@
+import 'package:agri_com/constants.dart';
 import 'package:agri_com/models/product.dart';
-import 'package:agri_com/screens/product_form.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:agri_com/widgets/product_grid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class StoreTab extends StatefulWidget {
@@ -13,63 +14,62 @@ class StoreTab extends StatefulWidget {
 class _StoreTabState extends State<StoreTab> {
   final CollectionReference _productsRef =
       FirebaseFirestore.instance.collection("Products");
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Stack(
         children: [
-          FutureBuilder<QuerySnapshot>(
-            future: _productsRef.get(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Scaffold(
-                  body: Center(
-                    child: Text("Error: ${snapshot.error}"),
+          StreamBuilder(
+            stream: _productsRef
+                .where("seller-id", isEqualTo: user.uid)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError)
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      color: Colors.red,
+                      size: 60,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text('Error: ${snapshot.error}'),
+                    )
+                  ],
+                );
+
+              if (snapshot.connectionState == ConnectionState.none)
+                return Center(
+                  child: Icon(
+                    Icons.info,
+                    color: Colors.blue,
+                    size: 60,
                   ),
                 );
-              }
 
-              // Collection Data ready to display
-              if (snapshot.connectionState == ConnectionState.done) {
-                List<Product> products = [Product()];
-
-                snapshot.data.docs.forEach((productSnapshot) {
-                  products.add(Product.fromSnapshot(productSnapshot));
-                });
-                // Display the data inside a list view
-                return GridView.builder(
-                  itemCount: products.length,
-                  padding: EdgeInsets.only(
-                    top: 108.0,
-                    bottom: 12.0,
-                  ),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
-                  itemBuilder: (context, index) {
-                    return ProductGrid(
-                      title: products[index].name,
-                      imageUrl: products[index].images[0],
-                      price: products[index].price != 0
-                          ? "\$${products[index].price}"
-                          : '',
-                      productId: products[index].id,
-                      onPressed: index == 0
-                          ? () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ProductForm()));
-                            }
-                          : null,
-                    );
-                  },
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      child: const CircularProgressIndicator(),
+                      width: 60,
+                      height: 60,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: CircularProgressIndicator(),
+                    )
+                  ],
                 );
-              }
 
-              // Loading State
-              return Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
+              return CustomisedView(
+                productSnapshots: snapshot.data.docs,
               );
             },
           ),
@@ -81,6 +81,81 @@ class _StoreTabState extends State<StoreTab> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CustomisedView extends StatelessWidget {
+  final List<QueryDocumentSnapshot> productSnapshots;
+
+  CustomisedView({this.productSnapshots});
+
+  final List active = [];
+  final List inactive = [];
+
+  @override
+  Widget build(BuildContext context) {
+    productSnapshots.forEach((QueryDocumentSnapshot snapshot) {
+      if (snapshot.data()['available'] == true) {
+        active.add(Product.fromSnapshot(snapshot));
+      } else
+        inactive.add(Product.fromSnapshot(snapshot));
+    });
+
+    return ListView(
+      padding: EdgeInsets.only(
+        top: 108.0,
+        bottom: 12.0,
+      ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 32.0),
+          child: Text(
+            'Active',
+            style: Constants.regularDarkText,
+          ),
+        ),
+        GridView.count(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            children: [ProductGrid()] +
+                active.map((product) {
+                  if (product != null)
+                    return ProductGrid(
+                      title: product.name,
+                      imageUrl: product.images[0],
+                      price: "Rs${product.price}",
+                      productId: product.id,
+                    );
+                }).toList()),
+        Padding(
+          padding: const EdgeInsets.only(left: 32.0),
+          child: Text(
+            'Inactive',
+            style: Constants.regularDarkText,
+          ),
+        ),
+        inactive.length > 0
+            ? GridView.count(
+          crossAxisCount: 2,
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          children: inactive.map((product) {
+            if (product != null)
+              return ProductGrid(
+                title: product.name,
+                imageUrl: product.images[0],
+                price: "Rs${product.price}",
+                productId: product.id,
+              );
+          }).toList(),
+        )
+            : Padding(
+          padding: const EdgeInsets.only(left: 32.0),
+          child: Text('No inactive products'),
+        ),
+      ],
     );
   }
 }

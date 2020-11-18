@@ -42,13 +42,7 @@ class Product {
 
   bool get available => _available;
 
-  Product() {
-    _images = [
-      'https://firebasestorage.googleapis.com/v0/b/agri-com.appspot.com/o/add.png?alt=media&token=b72ff0c8-f3c5-4113-8d5c-0e2237972471'
-    ];
-  }
-
-  Product.fromSnapshot(DocumentSnapshot snapshot) {
+  Product.fromSnapshot(QueryDocumentSnapshot snapshot) {
     _id = snapshot.id;
     _name = snapshot.data()[NAME];
     _description = snapshot.data()[DESCRIPTION];

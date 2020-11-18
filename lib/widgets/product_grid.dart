@@ -1,3 +1,4 @@
+import 'package:agri_com/screens/product_form.dart';
 import 'package:agri_com/screens/product_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,22 +12,25 @@ class ProductGrid extends StatelessWidget {
   final String title;
   final String price;
 
-  ProductGrid(
-      {this.onPressed, this.imageUrl, this.title, this.price, this.productId});
+  ProductGrid({this.onPressed, this.imageUrl, this.title, this.price, this.productId});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed ??
-          () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductPage(
-                    productId: productId,
-                  ),
-                ));
-          },
+      onTap: productId != null
+          ? () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductPage(
+                      productId: productId,
+                    ),
+                  ));
+            }
+          : () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => ProductForm()));
+            },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.0),
@@ -43,7 +47,7 @@ class ProductGrid extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: Image.network(
-                  "$imageUrl",
+                  imageUrl ?? Constants.addImageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -58,14 +62,16 @@ class ProductGrid extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      title,
+                      title ?? '',
                       style: Constants.regularHeading,
                     ),
                     Text(
-                      price,
+                      price ?? '',
                       style: TextStyle(
                           fontSize: 16.0,
-                          color: Theme.of(context).accentColor,
+                          color: Theme
+                              .of(context)
+                              .accentColor,
                           fontWeight: FontWeight.w600),
                     ),
                   ],
