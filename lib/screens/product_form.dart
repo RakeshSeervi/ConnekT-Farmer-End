@@ -212,39 +212,43 @@ class _ProductFormState extends State<ProductForm> with WidgetsBindingObserver {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: double.infinity,
-                        child: RaisedButton(
-                          color: Color(0x99FF1E00),
-                          onPressed: () async {
-                            setState(() {
-                              _autovalidateMode =
-                                  AutovalidateMode.onUserInteraction;
-                            });
-                            if (_fbKey.currentState.saveAndValidate()) {
-                              setState(() {
-                                isLoading = true;
-                              });
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) => Colors.black)),
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                                  setState(() {
+                                    _autovalidateMode =
+                                        AutovalidateMode.onUserInteraction;
+                                  });
+                                  if (_fbKey.currentState.saveAndValidate()) {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
 
-                              Map values = _fbKey.currentState.value;
+                                    Map values = _fbKey.currentState.value;
 
-                              bool res =
-                              await ProductService.addProduct(values);
+                                    bool res =
+                                        await ProductService.addProduct(values);
 
-                              setState(() {
-                                isLoading = false;
-                              });
+                                    setState(() {
+                                      isLoading = false;
+                                    });
 
-                              String msg = res == true
-                                  ? 'Product added succesfully'
-                                  : 'Failed to add product';
+                                    String msg = res == true
+                                        ? 'Product added succesfully'
+                                        : 'Failed to add product';
 
-                              Fluttertoast.showToast(msg: msg);
+                                    Fluttertoast.showToast(msg: msg);
 
-                              if (res == true) Navigator.of(context).pop();
-                            }
-                          },
+                                    if (res == true)
+                                      Navigator.of(context).pop();
+                                  }
+                                },
                           child: Text(
                             'Done',
-                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
