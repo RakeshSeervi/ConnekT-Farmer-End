@@ -38,24 +38,17 @@ class _BottomTabsState extends State<BottomTabs> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           BottomTabBtn(
-            icon: Icons.home_outlined,
+            icon: Icons.storefront_outlined,
             selected: _selectedTab == 0 ? true : false,
             onPressed: () {
               widget.tabPressed(0);
             },
           ),
           BottomTabBtn(
-            icon: Icons.storefront_outlined,
+            icon: Icons.account_circle_outlined,
             selected: _selectedTab == 1 ? true : false,
             onPressed: () {
               widget.tabPressed(1);
-            },
-          ),
-          BottomTabBtn(
-            icon: Icons.account_circle_outlined,
-            selected: _selectedTab == 2 ? true : false,
-            onPressed: () {
-              widget.tabPressed(2);
             },
           ),
         ],

@@ -76,8 +76,6 @@ class _StoreTabState extends State<StoreTab> {
           CustomActionBar(
             title: 'My Store',
             hasTitle: true,
-            hasCart: false,
-            hasSaved: false,
           ),
         ],
       ),

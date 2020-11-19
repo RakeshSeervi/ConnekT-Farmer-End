@@ -1,15 +1,14 @@
-import 'package:agri_com/screens/product_page.dart';
+import 'dart:io';
+
 import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 import 'package:path/path.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
 
 class MyAccount extends StatefulWidget {
   @override
@@ -165,7 +164,6 @@ class _MyAccount extends State<MyAccount> {
                           CustomActionBar(
                             title: "Profile",
                             hasBackArrrow: true,
-                            hasCart: true,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,

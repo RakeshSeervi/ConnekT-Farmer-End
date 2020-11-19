@@ -90,7 +90,6 @@ class _SearchTabState extends State<SearchTab> {
           CustomActionBar(
             title: "Search",
             hasBackArrrow: false,
-            hasSaved: true,
           )
         ],
       ),

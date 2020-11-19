@@ -53,7 +53,6 @@ class HomeTab extends StatelessWidget {
           CustomActionBar(
             title: "Home",
             hasBackArrrow: false,
-            hasSaved: true,
           ),
         ],
       ),

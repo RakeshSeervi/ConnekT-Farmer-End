@@ -1,8 +1,6 @@
-import 'package:agri_com/screens/settings_page.dart';
-import 'package:agri_com/tabs/profile_tab.dart';
-import 'package:agri_com/screens/myAccount_page.dart';
 import 'package:agri_com/screens/login_page.dart';
-import 'package:agri_com/screens/product_page.dart';
+import 'package:agri_com/screens/myAccount_page.dart';
+import 'package:agri_com/screens/settings_page.dart';
 import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class ProfileTab extends StatefulWidget{
+class ProfileTab extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -209,7 +207,6 @@ class _ProfileState extends State<ProfileTab > {
           CustomActionBar(
             title: "Profile",
             hasBackArrrow: false,
-            hasSaved: true,
           )
         ],
       ),

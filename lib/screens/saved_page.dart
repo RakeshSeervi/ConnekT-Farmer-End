@@ -2,8 +2,8 @@ import 'package:agri_com/screens/product_page.dart';
 import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class SavedPage extends StatefulWidget {
   @override
@@ -156,7 +156,6 @@ class _SavedPageState extends State<SavedPage> {
           CustomActionBar(
             hasBackArrrow: true,
             title: "Saved",
-            hasSaved: false,
           )
         ],
       ),
