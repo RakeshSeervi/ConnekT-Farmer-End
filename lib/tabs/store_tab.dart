@@ -120,14 +120,11 @@ class CustomisedView extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 2,
-            children: [ProductGrid()] +
+            children: [ProductGrid(product: null,)] +
                 active.map((product) {
                   if (product != null)
                     return ProductGrid(
-                      title: product.name,
-                      imageUrl: product.images[0],
-                      price: "Rs${product.price}",
-                      productId: product.id,
+                      product: product,
                     );
                 }).toList()),
         Padding(
@@ -149,10 +146,7 @@ class CustomisedView extends StatelessWidget {
                 children: inactive.map((product) {
                   if (product != null)
                     return ProductGrid(
-                      title: product.name,
-                      imageUrl: product.images[0],
-                      price: "Rs${product.price}",
-                      productId: product.id,
+                      product: product,
                     );
                 }).toList(),
               )

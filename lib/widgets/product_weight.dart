@@ -25,10 +25,10 @@ class _ProductSizeState extends State<ProductSize> {
           for (var i = 0; i < widget.productSizes.length; i++)
             GestureDetector(
               onTap: () {
-                widget.onSelected(widget.productSizes[i].toString());
-                setState(() {
-                  _selected = i;
-                });
+                // widget.onSelected(widget.productSizes[i].toString());
+                // setState(() {
+                //   _selected = i;
+                // });
               },
               child: Container(
                 width: 42.0,
