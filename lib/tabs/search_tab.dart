@@ -18,10 +18,8 @@ class _SearchTabState extends State<SearchTab> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: Stack(
         children: [
-
           if (_searchString.isEmpty)
             Center(
               child: Container(
@@ -32,7 +30,6 @@ class _SearchTabState extends State<SearchTab> {
               ),
             )
           else
-
             FutureBuilder<QuerySnapshot>(
               future: _firebaseServices.productsRef
                   .orderBy('search_string')

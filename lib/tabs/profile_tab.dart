@@ -13,9 +13,7 @@ class ProfileTab extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<ProfileTab > {
-
-
+class _ProfileState extends State<ProfileTab> {
   String _defaultImage = 'assets/images/user.png';
   FirebaseServices _firebaseServices = FirebaseServices();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -66,17 +64,16 @@ class _ProfileState extends State<ProfileTab > {
                             child: Container(
                               child: new UserAccountsDrawerHeader(
                                 accountName: Text(
-                                    "${document.data()['username']}" ??
-                                        "Username" ,
+                                  "${document.data()['username']}" ??
+                                      "Username",
                                   style: TextStyle(
-                                    color: Colors.black, fontSize: 14.0),
+                                      color: Colors.black, fontSize: 14.0),
                                 ),
                                 accountEmail: Text(
-                                    "${document.data()['email']}" ?? "Email",
+                                  "${document.data()['email']}" ?? "Email",
                                   style: TextStyle(
                                       color: Colors.black, fontSize: 15.0),
                                 ),
-
                                 currentAccountPicture: Container(
                                   child: Stack(
                                     children: [
@@ -97,8 +94,8 @@ class _ProfileState extends State<ProfileTab > {
                                     ],
                                   ),
                                 ),
-                                decoration:
-                                    new BoxDecoration(color: Colors.transparent),
+                                decoration: new BoxDecoration(
+                                    color: Colors.transparent),
                               ),
                             ),
                           ),
@@ -185,11 +182,11 @@ class _ProfileState extends State<ProfileTab > {
                         child: GestureDetector(
                           onTap: () async {
                             await FirebaseAuth.instance.signOut();
-                              await firebaseAuth.signOut();
-                              await googleSignIn.signOut();
+                            await firebaseAuth.signOut();
+                            await googleSignIn.signOut();
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (c) => LoginPage()),
-                                (r) => false);
+                                    (r) => false);
                           },
                           child: ListTile(
                             title: Text("Logout"),

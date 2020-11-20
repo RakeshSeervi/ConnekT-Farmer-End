@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ImageSwipe extends StatefulWidget {
   final List imageList;
+
   ImageSwipe({this.imageList});
 
   @override
@@ -9,7 +10,6 @@ class ImageSwipe extends StatefulWidget {
 }
 
 class _ImageSwipeState extends State<ImageSwipe> {
-
   int _selectedPage = 0;
 
   @override
@@ -25,7 +25,7 @@ class _ImageSwipeState extends State<ImageSwipe> {
               });
             },
             children: [
-              for(var i=0; i < widget.imageList.length; i++)
+              for (var i = 0; i < widget.imageList.length; i++)
                 Container(
                   child: Image.network(
                     "${widget.imageList[i]}",
@@ -41,11 +41,9 @@ class _ImageSwipeState extends State<ImageSwipe> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                for(var i=0; i < widget.imageList.length; i++)
+                for (var i = 0; i < widget.imageList.length; i++)
                   AnimatedContainer(
-                    duration: Duration(
-                        milliseconds: 300
-                    ),
+                    duration: Duration(milliseconds: 300),
                     curve: Curves.easeOutCubic,
                     margin: EdgeInsets.symmetric(
                       horizontal: 5.0,
@@ -54,8 +52,7 @@ class _ImageSwipeState extends State<ImageSwipe> {
                     height: 10.0,
                     decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(12.0)
-                    ),
+                        borderRadius: BorderRadius.circular(12.0)),
                   )
               ],
             ),

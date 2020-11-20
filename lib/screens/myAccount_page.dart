@@ -19,16 +19,17 @@ class _MyAccount extends State<MyAccount> {
   bool _isEditingText = false;
   TextEditingController _editingController;
   String initialText = "Initial Text";
+
   void initState() {
     super.initState();
     _editingController = TextEditingController(text: initialText);
   }
+
   @override
   void dispose() {
     _editingController.dispose();
     super.dispose();
   }
-
 
   final CollectionReference _userDetails =
       FirebaseFirestore.instance.collection('name');
@@ -43,7 +44,6 @@ class _MyAccount extends State<MyAccount> {
 
   @override
   Widget build(BuildContext context) {
-
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     final _formKey = GlobalKey<FormState>();
     final picker = ImagePicker();
@@ -53,15 +53,6 @@ class _MyAccount extends State<MyAccount> {
     String email = "";
     String profile = "";
     String url = "";
-
-
-
-
-
-
-
-
-
 
     Future uploadPic(BuildContext context) async {
       String fileName = basename(_image.path);
@@ -91,10 +82,13 @@ class _MyAccount extends State<MyAccount> {
             .showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
       });
     }
+
     Future getImage() async {
       File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      if(image !=null){
-        croppedImage = await ImageCropper.cropImage(sourcePath: image.path,aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      if (image != null) {
+        croppedImage = await ImageCropper.cropImage(
+            sourcePath: image.path,
+            aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
             compressQuality: 100,
             maxWidth: 700,
             maxHeight: 700,
@@ -105,9 +99,7 @@ class _MyAccount extends State<MyAccount> {
               statusBarColor: Colors.deepOrange.shade900,
               backgroundColor: Colors.white,
             ));
-
       }
-
 
       setState(() {
         _image = croppedImage;
@@ -115,7 +107,8 @@ class _MyAccount extends State<MyAccount> {
       });
       uploadPic(context);
     }
-    Future _addUserName() async{
+
+    Future _addUserName() async {
       return _firebaseServices.userDetails
           .doc(_firebaseServices.getUserId())
           .collection("Details")
@@ -168,7 +161,6 @@ class _MyAccount extends State<MyAccount> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-
                               Align(
                                 alignment: Alignment.center,
                                 child: CircleAvatar(
@@ -201,7 +193,6 @@ class _MyAccount extends State<MyAccount> {
                                   ),
                                   onPressed: () {
                                     getImage();
-
                                   },
                                 ),
                               ),
@@ -221,13 +212,17 @@ class _MyAccount extends State<MyAccount> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 10.0, bottom: 10, left: 23, right: 23),
+                                      top: 10.0,
+                                      bottom: 10,
+                                      left: 23,
+                                      right: 23),
                                   child: TextFormField(
                                     controller: _username,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
-                                        hintText: "${document.data()['username']}" ??
-                                            "Name",
+                                      hintText:
+                                          "${document.data()['username']}" ??
+                                              "Name",
                                       prefixIcon: Icon(Icons.account_circle),
                                     ),
                                     validator: (value) {
@@ -250,7 +245,9 @@ class _MyAccount extends State<MyAccount> {
                                               color: Colors.black,
                                               fontSize: 18.0,
                                               fontWeight: FontWeight.bold)),
-                                      Text("  ${document.data()['email']}" ?? "Email",
+                                      Text(
+                                          "  ${document.data()['email']}" ??
+                                              "Email",
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 18.0,
@@ -262,80 +259,90 @@ class _MyAccount extends State<MyAccount> {
                                   height: 250.0,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     FlatButton(
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18.0),
-                                        side: BorderSide(color: Colors.black)),
-                                        color: Colors.black,
-                                        textColor: Colors.red,
-                                    padding: EdgeInsets.all(8.0),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text(
-                                          'Cancel',
-                                            style: TextStyle(
-                                              fontSize: 16.0,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                        ),
-                                      ),
-                                    FlatButton(
-                                        shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18.0),
-                                        side: BorderSide(color: Colors.black)),
+                                          borderRadius:
+                                          BorderRadius.circular(18.0),
+                                          side:
+                                          BorderSide(color: Colors.black)),
                                       color: Colors.black,
                                       textColor: Colors.red,
-                                        onPressed: () {
-                                          if (_formKey.currentState.validate()){
-                                            name = _username.text;
-                                            _addUserName();
-                                            setState(() {
-                                              print("Profile Picture uploaded");
-                                              Scaffold.of(context)
-                                                  .showSnackBar(SnackBar(content: Text('UserName Changed')));
-                                            });
-
-                                          }
-                                          else
-                                            setState(() {
-                                              _autovalidate = true;
-                                              Future<void> _alertDialogBuilder(String error) async {
-                                                return showDialog(
-                                                    context: context,
-                                                    barrierDismissible: false,
-                                                    builder: (context) {
-                                                      return AlertDialog(
-                                                        title: Text("Error"),
-                                                        content: Container(
-                                                          child: Text(error),
-                                                        ),
-                                                        actions: [
-                                                          FlatButton(
-                                                            child: Text("Close Dialog"),
-                                                            onPressed: () {
-                                                              Navigator.pop(context);
-                                                            },
-                                                          )
-                                                        ],
-                                                      );
-                                                    });
-                                              }
-                                              _alertDialogBuilder("Username Empty");
-                                            });
-                                        },
-                                        child: Text(
-                                          'Save',
-                                          style: TextStyle(
-                                              color: Colors.white, fontSize: 16.0),
+                                      padding: EdgeInsets.all(8.0),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
+                                    ),
+                                    FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(18.0),
+                                          side:
+                                          BorderSide(color: Colors.black)),
+                                      color: Colors.black,
+                                      textColor: Colors.red,
+                                      onPressed: () {
+                                        if (_formKey.currentState.validate()) {
+                                          name = _username.text;
+                                          _addUserName();
+                                          setState(() {
+                                            print("Profile Picture uploaded");
+                                            Scaffold.of(context).showSnackBar(
+                                                SnackBar(
+                                                    content: Text(
+                                                        'UserName Changed')));
+                                          });
+                                        } else
+                                          setState(() {
+                                            _autovalidate = true;
+                                            Future<void> _alertDialogBuilder(
+                                                String error) async {
+                                              return showDialog(
+                                                  context: context,
+                                                  barrierDismissible: false,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      title: Text("Error"),
+                                                      content: Container(
+                                                        child: Text(error),
+                                                      ),
+                                                      actions: [
+                                                        FlatButton(
+                                                          child: Text(
+                                                              "Close Dialog"),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                        )
+                                                      ],
+                                                    );
+                                                  });
+                                            }
+
+                                            _alertDialogBuilder(
+                                                "Username Empty");
+                                          });
+                                      },
+                                      child: Text(
+                                        'Save',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16.0),
+                                      ),
+                                    ),
                                   ],
                                 ),
-
                               ],
                             ),
                           ),
@@ -357,11 +364,5 @@ class _MyAccount extends State<MyAccount> {
         ],
       ),
     );
-
   }
-
-  }
-
-
-
-
+}

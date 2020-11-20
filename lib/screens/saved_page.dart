@@ -11,7 +11,6 @@ class SavedPage extends StatefulWidget {
 }
 
 class _SavedPageState extends State<SavedPage> {
-
   FirebaseServices _firebaseServices = FirebaseServices();
 
   @override
@@ -94,9 +93,9 @@ class _SavedPageState extends State<SavedPage> {
                                     ),
                                     child: Column(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "${_productMap['name']}",
@@ -161,5 +160,4 @@ class _SavedPageState extends State<SavedPage> {
       ),
     );
   }
-
 }

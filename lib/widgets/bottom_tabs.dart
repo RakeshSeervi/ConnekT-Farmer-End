@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class BottomTabs extends StatefulWidget {
   final int selectedTab;
   final Function(int) tabPressed;
+
   BottomTabs({this.selectedTab, this.tabPressed});
 
   @override
@@ -10,7 +12,6 @@ class BottomTabs extends StatefulWidget {
 }
 
 class _BottomTabsState extends State<BottomTabs> {
-
   int _selectedTab = 0;
 
   @override
@@ -19,36 +20,43 @@ class _BottomTabsState extends State<BottomTabs> {
 
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(50.0),
-              topRight: Radius.circular(50.0),
-              bottomLeft: Radius.circular(50),
-              bottomRight: Radius.circular(50)
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              spreadRadius: 1.0,
-              blurRadius: 30.0,
-            )
-          ]
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(50.0),
+          topRight: Radius.circular(50.0),
+          bottomLeft: Radius.circular(50),
+          bottomRight: Radius.circular(50),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            spreadRadius: 1.0,
+            blurRadius: 30.0,
+          )
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           BottomTabBtn(
-            icon: Icons.storefront_outlined,
+            icon: LineAwesomeIcons.clipboard_list,
             selected: _selectedTab == 0 ? true : false,
             onPressed: () {
               widget.tabPressed(0);
             },
           ),
           BottomTabBtn(
-            icon: Icons.account_circle_outlined,
+            icon: Icons.storefront_outlined,
             selected: _selectedTab == 1 ? true : false,
             onPressed: () {
               widget.tabPressed(1);
+            },
+          ),
+          BottomTabBtn(
+            icon: Icons.account_circle_outlined,
+            selected: _selectedTab == 2 ? true : false,
+            onPressed: () {
+              widget.tabPressed(2);
             },
           ),
         ],
@@ -76,11 +84,15 @@ class BottomTabBtn extends StatelessWidget {
           horizontal: 24.0,
         ),
         decoration: BoxDecoration(
-            border: Border(
-                top: BorderSide(
-          color: _selected ? Theme.of(context).accentColor : Colors.transparent,
-          width: 2.0,
-        ))),
+          border: Border(
+            top: BorderSide(
+              color: _selected
+                  ? Theme.of(context).accentColor
+                  : Colors.transparent,
+              width: 2.0,
+            ),
+          ),
+        ),
         child: Icon(
           icon,
           size: 32.0,

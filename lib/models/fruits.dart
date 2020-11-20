@@ -3,8 +3,8 @@ const String WEIGHTS = 'weights';
 const String MIN_WEIGHT = 'min-weight';
 const String MAX_WEIGHT = 'max-weight';
 const String IMAGE_PATH = 'assets/images/fruits/';
-const List WEIGHT1 = [0.5, 1, 5];
-const List WEIGHT2 = [0.25, 0.5, 1];
+const List<double> WEIGHT1 = [0.5, 1, 5];
+const List<double> WEIGHT2 = [0.25, 0.5, 1];
 
 const Map<String, Map<String, dynamic>> Fruits = {
   'Apple': {

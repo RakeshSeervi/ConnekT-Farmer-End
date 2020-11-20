@@ -6,7 +6,6 @@ import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:agri_com/widgets/image_swipe.dart';
 import 'package:agri_com/widgets/product_weight.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProductPage extends StatefulWidget {
@@ -19,9 +18,6 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-
-  User _user = FirebaseAuth.instance.currentUser;
-
   FirebaseServices _firebaseServices = FirebaseServices();
 
   String _selectedProductSize;

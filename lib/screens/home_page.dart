@@ -1,3 +1,4 @@
+import 'package:agri_com/tabs/orders_tab.dart';
 import 'package:agri_com/tabs/profile_tab.dart';
 import 'package:agri_com/tabs/store_tab.dart';
 import 'package:agri_com/widgets/bottom_tabs.dart';
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> {
                 });
               },
               children: [
+                OrdersTab(),
                 StoreTab(),
                 ProfileTab(),
               ],

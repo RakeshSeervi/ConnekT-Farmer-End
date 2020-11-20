@@ -14,7 +14,7 @@ class Product {
   String _id = '';
   String _name = '';
   String _description = '';
-  List _images = [];
+  List<String> _images = [];
   int _price = 0;
   String _category = '';
   String _subCategory = '';
@@ -28,7 +28,7 @@ class Product {
 
   String get description => _description;
 
-  List get images => _images;
+  List<String> get images => _images;
 
   int get price => _price;
 
@@ -46,7 +46,7 @@ class Product {
     _id = snapshot.id;
     _name = snapshot.data()[NAME];
     _description = snapshot.data()[DESCRIPTION];
-    _images = snapshot.data()[IMAGES];
+    _images = snapshot.data()[IMAGES].cast<String>();
     _price = snapshot.data()[PRICE];
     _category = snapshot.data()[CATEGORY];
     _subCategory = snapshot.data()[SUB_CATEGORY];

@@ -9,6 +9,8 @@ class ProductService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final Uuid _uuid = Uuid();
 
+  static const String productsRef = 'Products';
+
   static const String IMAGES = 'images';
   static const String NAME = 'name';
   static const String DESCRIPTION = 'description';
@@ -30,17 +32,23 @@ class ProductService {
 
     if (downloadableUrls.length < 1) return false;
 
-    return await _firestore.collection('Products').add({
-      NAME: data[NAME],
-      PRICE: data[PRICE],
-      IMAGES: downloadableUrls,
-      DESCRIPTION: data[DESCRIPTION],
-      CATEGORY: data[CATEGORY],
-      SUB_CATEGORY: data[SUB_CATEGORY],
-      SELLER_ID: _auth.currentUser.uid,
-      SELLER_NAME: _auth.currentUser.displayName,
-      AVAILABLE: true,
-    }).then((value) => value != null);
+    return await _firestore
+        .collection(productsRef)
+        .add({
+          NAME: data[NAME],
+          PRICE: data[PRICE],
+          IMAGES: downloadableUrls,
+          DESCRIPTION: data[DESCRIPTION],
+          CATEGORY: data[CATEGORY],
+          SUB_CATEGORY: data[SUB_CATEGORY],
+          SELLER_ID: _auth.currentUser.uid,
+          SELLER_NAME: _auth.currentUser.displayName,
+          AVAILABLE: true,
+        })
+        .then((value) => true)
+        .catchError((error) {
+          return false;
+        });
   }
 
   static Future<String> getDownloadableUrl(image) async {
@@ -50,8 +58,12 @@ class ProductService {
         .putFile(image)
         .onComplete;
     if (snapshot.error == null) {
-      return await snapshot.ref.getDownloadURL();
+      return snapshot.ref.getDownloadURL();
     }
     return null;
+  }
+
+  static Future<DocumentSnapshot> getProductById(String id) {
+    return _firestore.collection(productsRef).doc(id).get();
   }
 }

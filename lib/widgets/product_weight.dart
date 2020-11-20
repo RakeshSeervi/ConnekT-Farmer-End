@@ -11,7 +11,6 @@ class ProductSize extends StatefulWidget {
 }
 
 class _ProductSizeState extends State<ProductSize> {
-
   int _selected = 0;
 
   @override
@@ -34,7 +33,9 @@ class _ProductSizeState extends State<ProductSize> {
                 width: 42.0,
                 height: 42.0,
                 decoration: BoxDecoration(
-                  color: _selected == i ? Theme.of(context).accentColor : Color(0xFFDCDCDC),
+                  color: _selected == i
+                      ? Theme.of(context).accentColor
+                      : Color(0xFFDCDCDC),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 alignment: Alignment.center,

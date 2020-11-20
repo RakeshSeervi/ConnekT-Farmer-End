@@ -1,13 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:agri_com/constants.dart';
 import 'package:agri_com/screens/home_page.dart';
 import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/widgets/custom_btn.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:flutter/material.dart";
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'home_page.dart';
 
 class Register extends StatefulWidget {
@@ -35,7 +36,7 @@ class _RegisterState extends State<Register> {
   TextEditingController _password = TextEditingController();
   TextEditingController _repeatPassword = TextEditingController();
   TextEditingController _profilePicture = TextEditingController();
-  String profilePic ;
+  String profilePic;
 
   var _autovalidate = false;
 
@@ -325,7 +326,7 @@ class _RegisterState extends State<Register> {
           .createUserWithEmailAndPassword(
               email: _email.text, password: _password.text);
       profilePic =
-      "https://image.shutterstock.com/image-vector/vector-simple-male-profile-icon-260nw-1388357696.jpg";
+          "https://image.shutterstock.com/image-vector/vector-simple-male-profile-icon-260nw-1388357696.jpg";
 
       final CollectionReference userDetails =
           FirebaseFirestore.instance.collection('name');

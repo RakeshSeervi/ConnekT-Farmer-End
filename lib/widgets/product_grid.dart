@@ -12,7 +12,8 @@ class ProductGrid extends StatelessWidget {
   final String title;
   final String price;
 
-  ProductGrid({this.onPressed, this.imageUrl, this.title, this.price, this.productId});
+  ProductGrid(
+      {this.onPressed, this.imageUrl, this.title, this.price, this.productId});
 
   @override
   Widget build(BuildContext context) {

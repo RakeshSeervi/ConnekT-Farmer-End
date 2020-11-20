@@ -37,9 +37,6 @@ class _LoginPageState extends State<LoginPage> {
 
   var _autovalidate = false;
 
-
-
-
   Future<void> _alertDialogBuilder(String error) async {
     return showDialog(
         context: context,
@@ -196,7 +193,9 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         handleGoogleSignIn();
                       },
-                      icon: Image.asset('assets/images/google.jpg',)),
+                      icon: Image.asset(
+                        'assets/images/google.jpg',
+                      )),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -213,7 +212,6 @@ class _LoginPageState extends State<LoginPage> {
                     outlineBtn: true,
                   ),
                 ),
-
               ],
             ),
           ),
@@ -221,6 +219,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
   Future handleGoogleSignIn() async {
     preferences = await SharedPreferences.getInstance();
 

@@ -1,18 +1,18 @@
-import 'package:agri_com/models/product.dart';
+import 'package:agri_com/models/order.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
-import 'package:agri_com/widgets/product_grid.dart';
+import 'package:agri_com/widgets/order_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class StoreTab extends StatefulWidget {
+class OrdersTab extends StatefulWidget {
   @override
-  _StoreTabState createState() => _StoreTabState();
+  _OrdersTabState createState() => _OrdersTabState();
 }
 
-class _StoreTabState extends State<StoreTab> {
-  final CollectionReference _productsRef =
-      FirebaseFirestore.instance.collection("Products");
+class _OrdersTabState extends State<OrdersTab> {
+  final CollectionReference _ordersRef =
+      FirebaseFirestore.instance.collection("Orders");
   final user = FirebaseAuth.instance.currentUser;
 
   @override
@@ -22,9 +22,8 @@ class _StoreTabState extends State<StoreTab> {
         children: [
           StreamBuilder(
             initialData: null,
-            stream: _productsRef
-                .where("seller-id", isEqualTo: user.uid)
-                .snapshots(),
+            stream:
+                _ordersRef.where("seller-id", isEqualTo: user.uid).snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError)
@@ -69,12 +68,12 @@ class _StoreTabState extends State<StoreTab> {
                 );
 
               return CustomisedView(
-                productSnapshots: snapshot.data.docs,
+                orderSnapshots: snapshot.data.docs,
               );
             },
           ),
           CustomActionBar(
-            title: 'My Store',
+            title: 'Orders',
             hasTitle: true,
           ),
         ],
@@ -84,20 +83,20 @@ class _StoreTabState extends State<StoreTab> {
 }
 
 class CustomisedView extends StatelessWidget {
-  final List<QueryDocumentSnapshot> productSnapshots;
+  final List<QueryDocumentSnapshot> orderSnapshots;
 
-  CustomisedView({this.productSnapshots});
+  CustomisedView({this.orderSnapshots});
 
-  final List active = [];
-  final List inactive = [];
+  final List pending = [];
+  final List completed = [];
 
   @override
   Widget build(BuildContext context) {
-    productSnapshots.forEach((QueryDocumentSnapshot snapshot) {
-      if (snapshot.data()['available'] == true) {
-        active.add(Product.fromSnapshot(snapshot));
+    orderSnapshots.forEach((QueryDocumentSnapshot snapshot) {
+      if (snapshot.data()['completed'] == false) {
+        pending.add(Order.fromSnapshot(snapshot));
       } else
-        inactive.add(Product.fromSnapshot(snapshot));
+        completed.add(Order.fromSnapshot(snapshot));
     });
 
     return ListView(
@@ -107,64 +106,49 @@ class CustomisedView extends StatelessWidget {
       ),
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 32.0),
+          padding: const EdgeInsets.only(left: 16.0),
           child: Text(
-            'Active',
+            'Pending',
             style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w600,
-                color: Colors.green),
+                fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.red),
           ),
         ),
-        GridView.count(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            crossAxisCount: 2,
-            children: [ProductGrid()] +
-                active.map((product) {
-                  print(product.name);
-                  print(product.id);
-                  print(product.images[0]);
-                  print(product.price);
-                  print(product.category);
-                  print(product.subCategory);
-                  if (product != null)
-                    return ProductGrid(
-                      title: product.name,
-                      imageUrl: product.images[0],
-                      price: "Rs${product.price}",
-                      productId: product.id,
-                    );
-                }).toList()),
+        pending.length > 0
+            ? ListView(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                children: pending.map((order) {
+                  if (order != null) return OrderCard(order: order);
+                }).toList())
+            : Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text('No orders pending!'),
+              ),
         Padding(
-          padding: const EdgeInsets.only(left: 32.0),
+          padding: const EdgeInsets.only(left: 16.0, top: 16),
           child: Text(
-            'Inactive',
+            'Completed',
             style: TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.w600,
-              color: Colors.red,
+              color: Colors.green,
             ),
           ),
         ),
-        inactive.length > 0
-            ? GridView.count(
-                crossAxisCount: 2,
+        completed.length > 0
+            ? ListView(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                children: inactive.map((product) {
-                  if (product != null)
-                    return ProductGrid(
-                      title: product.name,
-                      imageUrl: product.images[0],
-                      price: "Rs${product.price}",
-                      productId: product.id,
+                children: completed.map((order) {
+                  if (order != null)
+                    return OrderCard(
+                      order: order,
                     );
                 }).toList(),
               )
             : Padding(
-                padding: const EdgeInsets.only(left: 32.0),
-                child: Text('No inactive products'),
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text('No orders to show'),
               ),
       ],
     );

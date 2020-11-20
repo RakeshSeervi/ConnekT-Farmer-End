@@ -5,6 +5,7 @@ class CustomBtn extends StatelessWidget {
   final Function onPressed;
   final bool outlineBtn;
   final bool isLoading;
+
   CustomBtn({this.text, this.onPressed, this.outlineBtn, this.isLoading});
 
   @override

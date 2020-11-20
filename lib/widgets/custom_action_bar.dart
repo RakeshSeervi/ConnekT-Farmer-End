@@ -24,14 +24,14 @@ class CustomActionBar extends StatelessWidget {
       decoration: BoxDecoration(
           gradient: _hasBackground
               ? LinearGradient(
-            colors: [
-              Colors.white,
-              Colors.white.withOpacity(0),
-            ],
-            begin: Alignment(0, 0),
-            end: Alignment(0, 1),
-          ): null
-      ),
+                  colors: [
+                    Colors.white,
+                    Colors.white.withOpacity(0),
+                  ],
+                  begin: Alignment(0, 0),
+                  end: Alignment(0, 1),
+                )
+              : null),
       padding: EdgeInsets.only(
         top: 56.0,
         left: 24.0,
@@ -41,8 +41,7 @@ class CustomActionBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-
-          if(_hasBackArrow)
+          if (_hasBackArrow)
             GestureDetector(
               onTap: () {
                 Navigator.pop(context);
@@ -56,16 +55,14 @@ class CustomActionBar extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: Image(
-                  image: AssetImage(
-                      "assets/images/back_arrow.png"
-                  ),
+                  image: AssetImage("assets/images/back_arrow.png"),
                   color: Colors.black,
                   width: 16.0,
                   height: 16.0,
                 ),
               ),
             ),
-          if(_hasTitle)
+          if (_hasTitle)
             Text(
               title ?? "Action Bar",
               style: Constants.boldHeading,
