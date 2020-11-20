@@ -1,3 +1,4 @@
+import 'package:agri_com/models/product.dart';
 import 'package:agri_com/screens/product_page.dart';
 import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
@@ -47,7 +48,7 @@ class _SavedPageState extends State<SavedPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProductPage(
-                                productId: document.id,
+                                product: Product.fromSnapshot(document),
                               ),
                             ));
                       },

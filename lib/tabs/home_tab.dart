@@ -1,3 +1,4 @@
+import 'package:agri_com/models/product.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:agri_com/widgets/product_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,10 +34,7 @@ class HomeTab extends StatelessWidget {
                   ),
                   children: snapshot.data.docs.map((document) {
                     return ProductCard(
-                      title: document.data()['name'],
-                      imageUrl: document.data()['images'][0],
-                      price: "\$${document.data()['price']}",
-                      productId: document.id,
+                      product: Product.fromSnapshot(document),
                     );
                   }).toList(),
                 );
