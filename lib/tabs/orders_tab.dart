@@ -1,6 +1,6 @@
 import 'package:agri_com/models/order.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
-import 'package:agri_com/widgets/order_card.dart';
+import 'package:agri_com/widgets/order/order_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +74,6 @@ class _OrdersTabState extends State<OrdersTab> {
           ),
           CustomActionBar(
             title: 'Orders',
-            hasTitle: true,
           ),
         ],
       ),
@@ -115,6 +114,7 @@ class CustomisedView extends StatelessWidget {
         ),
         pending.length > 0
             ? ListView(
+            padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 children: pending.map((order) {
@@ -137,15 +137,16 @@ class CustomisedView extends StatelessWidget {
         ),
         completed.length > 0
             ? ListView(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: completed.map((order) {
-                  if (order != null)
-                    return OrderCard(
-                      order: order,
-                    );
-                }).toList(),
-              )
+          padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          children: completed.map((order) {
+            if (order != null)
+              return OrderCard(
+                order: order,
+              );
+          }).toList(),
+        )
             : Padding(
                 padding: const EdgeInsets.only(left: 16.0),
                 child: Text('No orders to show'),

@@ -18,7 +18,7 @@ class CollageBuilder extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Card(
-                elevation: 32,
+                elevation: 16,
                 color: Colors.transparent,
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -164,11 +164,12 @@ class CollageBuilder extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(4),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                    child: Card(
-                      shadowColor: Colors.transparent,
-                      color: Colors.transparent,
+                  child: Card(
+                    elevation: 16,
+                    shadowColor: Colors.transparent,
+                    color: Colors.transparent,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
                       child: Column(
                         children: [
                           Text(
@@ -202,7 +203,7 @@ class ImageCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Card(
-        elevation: 32,
+        elevation: 16,
         color: Colors.transparent,
         child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(16)),

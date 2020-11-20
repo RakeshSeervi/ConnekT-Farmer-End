@@ -75,7 +75,6 @@ class _StoreTabState extends State<StoreTab> {
           ),
           CustomActionBar(
             title: 'My Store',
-            hasTitle: true,
           ),
         ],
       ),
@@ -117,17 +116,12 @@ class CustomisedView extends StatelessWidget {
           ),
         ),
         GridView.count(
+            padding: const EdgeInsets.symmetric(vertical: 8),
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 2,
-            children: [ProductGrid(product: null,)] +
+            children: [ProductGrid()] +
                 active.map((product) {
-                  print(product.name);
-                  print(product.id);
-                  print(product.images[0]);
-                  print(product.price);
-                  print(product.category);
-                  print(product.subCategory);
                   if (product != null)
                     return ProductGrid(
                       product: product,
@@ -146,6 +140,7 @@ class CustomisedView extends StatelessWidget {
         ),
         inactive.length > 0
             ? GridView.count(
+                padding: EdgeInsets.symmetric(vertical: 8),
                 crossAxisCount: 2,
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,

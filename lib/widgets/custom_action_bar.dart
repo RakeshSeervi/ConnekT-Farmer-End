@@ -4,20 +4,17 @@ import 'package:flutter/material.dart';
 class CustomActionBar extends StatelessWidget {
   final String title;
   final bool hasBackArrrow;
-  final bool hasTitle;
   final bool hasBackground;
 
   CustomActionBar({
     this.title,
     this.hasBackArrrow,
-    this.hasTitle,
     this.hasBackground,
   });
 
   @override
   Widget build(BuildContext context) {
     bool _hasBackArrow = hasBackArrrow ?? false;
-    bool _hasTitle = hasTitle ?? true;
     bool _hasBackground = hasBackground ?? true;
 
     return Container(
@@ -39,7 +36,6 @@ class CustomActionBar extends StatelessWidget {
         bottom: 42.0,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           if (_hasBackArrow)
             GestureDetector(
@@ -50,23 +46,21 @@ class CustomActionBar extends StatelessWidget {
                 width: 42.0,
                 height: 42.0,
                 decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
                 alignment: Alignment.center,
-                child: Image(
-                  image: AssetImage("assets/images/back_arrow.png"),
-                  color: Colors.black,
-                  width: 16.0,
-                  height: 16.0,
+                child: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  size: 16.0,
+                  color: Colors.white,
                 ),
               ),
             ),
-          if (_hasTitle)
-            Text(
-              title ?? "Action Bar",
-              style: Constants.boldHeading,
-            ),
+          Text(
+            title ?? "",
+            style: Constants.boldHeading,
+          ),
         ],
       ),
     );

@@ -14,7 +14,7 @@ class ProductGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: product!= null
+      onTap: product != null
           ? () {
               Navigator.push(
                   context,
@@ -29,22 +29,22 @@ class ProductGrid extends StatelessWidget {
                   .push(MaterialPageRoute(builder: (context) => ProductForm()));
             },
       child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
+        alignment: Alignment.center,
         height: 175.0,
-        margin: EdgeInsets.symmetric(
-          vertical: 6.0,
-          horizontal: 12.0,
-        ),
         child: Stack(
           children: [
             Container(
               height: 175.0,
+              width: 175,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
-                child: Image.network(
-                  product!=null?product.images[0] : Constants.addImageUrl,
+                child: product != null
+                    ? Image.network(
+                  product.images[0],
+                  fit: BoxFit.cover,
+                )
+                    : Image.asset(
+                  'assets/images/add.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -54,22 +54,29 @@ class ProductGrid extends StatelessWidget {
               left: 0,
               right: 0,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32.0),
+                padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      product!=null ? product.name: '',
-                      style: Constants.regularHeading,
+                    Flexible(
+                      flex: 2,
+                      child: Text(
+                        product != null ? product.name : '',
+                        style: Constants.regularHeading,
+                      ),
                     ),
-                    Text(
-                      product!=null ?product.price.toString() : '',
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          color: Theme
-                              .of(context)
-                              .accentColor,
-                          fontWeight: FontWeight.w600),
+                    Flexible(
+                      flex: 1,
+                      child: Text(
+                        product != null ? 'Rs ' + product.price.toString() : '',
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            color: Theme
+                                .of(context)
+                                .accentColor,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 ),

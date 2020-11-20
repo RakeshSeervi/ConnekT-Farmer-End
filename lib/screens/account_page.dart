@@ -260,14 +260,14 @@ class _MyAccount extends State<MyAccount> {
                                 ),
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: <Widget>[
                                     FlatButton(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(18.0),
+                                              BorderRadius.circular(18.0),
                                           side:
-                                          BorderSide(color: Colors.black)),
+                                              BorderSide(color: Colors.black)),
                                       color: Colors.black,
                                       textColor: Colors.red,
                                       padding: EdgeInsets.all(8.0),

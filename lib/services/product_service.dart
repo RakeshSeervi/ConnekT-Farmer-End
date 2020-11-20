@@ -63,6 +63,15 @@ class ProductService {
     return null;
   }
 
+  static Future<bool> updateAvailability(productId, val) {
+    return _firestore
+        .collection(productsRef)
+        .doc(productId)
+        .update({AVAILABLE: val})
+        .then((value) => true)
+        .catchError((e) => false);
+  }
+
   static Future<DocumentSnapshot> getProductById(String id) {
     return _firestore.collection(productsRef).doc(id).get();
   }

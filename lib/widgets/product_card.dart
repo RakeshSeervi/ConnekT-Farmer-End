@@ -9,9 +9,7 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final Function onPressed;
 
-
-  ProductCard(
-      {this.onPressed, this.product});
+  ProductCard({this.onPressed, this.product});
 
   @override
   Widget build(BuildContext context) {

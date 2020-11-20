@@ -1,5 +1,5 @@
+import 'package:agri_com/screens/account_page.dart';
 import 'package:agri_com/screens/login_page.dart';
-import 'package:agri_com/screens/myAccount_page.dart';
 import 'package:agri_com/screens/settings_page.dart';
 import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
@@ -14,7 +14,6 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfileTab> {
-  String _defaultImage = 'assets/images/user.png';
   FirebaseServices _firebaseServices = FirebaseServices();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = new GoogleSignIn();
@@ -186,7 +185,7 @@ class _ProfileState extends State<ProfileTab> {
                             await googleSignIn.signOut();
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(builder: (c) => LoginPage()),
-                                    (r) => false);
+                                (r) => false);
                           },
                           child: ListTile(
                             title: Text("Logout"),

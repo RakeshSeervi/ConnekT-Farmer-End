@@ -1,7 +1,7 @@
 import 'package:agri_com/constants.dart';
 import 'package:agri_com/models/order.dart';
-import 'package:agri_com/widgets/collage_builder.dart';
-import 'package:agri_com/widgets/order_summary.dart';
+import 'package:agri_com/widgets/order/collage_builder.dart';
+import 'package:agri_com/widgets/order/order_summary.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -20,7 +20,7 @@ class OrderCard extends StatelessWidget {
         ' / ' +
         order.orderDate.year.toString();
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 16),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Container(
         height: 175,
         decoration: BoxDecoration(
@@ -40,7 +40,10 @@ class OrderCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.person),
+                        Icon(
+                          Icons.person,
+                          color: Colors.black,
+                        ),
                         SizedBox(
                           width: 8,
                         ),
@@ -60,7 +63,6 @@ class OrderCard extends StatelessWidget {
                       children: [
                         Icon(
                           LineAwesomeIcons.shopping_bag,
-                          color: Color(0xFFFF1E00),
                         ),
                         SizedBox(
                           width: 8,
@@ -76,7 +78,10 @@ class OrderCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Icon(LineAwesomeIcons.calendar),
+                        Icon(
+                          LineAwesomeIcons.calendar,
+                          color: Colors.black,
+                        ),
                         SizedBox(
                           width: 8,
                         ),
