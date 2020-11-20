@@ -24,7 +24,6 @@ class _ProductPageState extends State<ProductPage> {
 
   FirebaseServices _firebaseServices = FirebaseServices();
 
-
   final SnackBar _snackBarDelete = SnackBar(
     content: Text("Product Deleted"),
   );
@@ -32,13 +31,12 @@ class _ProductPageState extends State<ProductPage> {
     content: Text("Product Edited"),
   );
   bool isSwitched;
+
   @override
   void initState() {
     isSwitched = widget.product.available;
     super.initState();
-
   }
-
 
   @override
   Widget build(BuildContext context) {
