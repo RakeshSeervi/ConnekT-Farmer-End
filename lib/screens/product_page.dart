@@ -8,6 +8,7 @@ import 'package:agri_com/widgets/image_swipe.dart';
 import 'package:agri_com/widgets/product_weight.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 
 class ProductPage extends StatefulWidget {
   final Product product;
@@ -19,34 +20,20 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-
   User _user = FirebaseAuth.instance.currentUser;
 
   FirebaseServices _firebaseServices = FirebaseServices();
 
   String _selectedProductSize;
+  bool isSwitched ;
 
-  Future _addToCart() {
-    return _firebaseServices.usersRef
-        .doc(_firebaseServices.getUserId())
-        .collection("Cart")
-        .doc(widget.product.id)
-        .set({"Weight": _selectedProductSize});
-  }
 
-  Future _addToSaved() {
-    return _firebaseServices.usersRef
-        .doc(_firebaseServices.getUserId())
-        .collection("Saved")
-        .doc(widget.product.id)
-        .set({"Weight": _selectedProductSize});
-  }
 
-  final SnackBar _snackBar = SnackBar(
-    content: Text("Product added to the cart"),
+  final SnackBar _snackBarDelete = SnackBar(
+    content: Text("Product Deleted"),
   );
-  final SnackBar _snackBarSaved = SnackBar(
-    content: Text("Product saved"),
+  final SnackBar _snackBarEdit = SnackBar(
+    content: Text("Product Edited"),
   );
 
   @override
@@ -94,7 +81,7 @@ class _ProductPageState extends State<ProductPage> {
                         bottom: 4.0,
                       ),
                       child: Text(
-                        "${product.name}",
+                        product.name,
                         style: Constants.boldHeading,
                       ),
                     ),
@@ -126,64 +113,120 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
+                        vertical: 4.0,
+                        horizontal: 24.0,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Category ",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).accentColor,
+
+                            ),
+                          ),
+
+                          Text(
+                            product.category,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4.0,
+                        horizontal: 24.0,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Subcategory ",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).accentColor,
+
+                            ),
+                          ),
+
+                          Text(
+                            product.subCategory,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
                         vertical: 24.0,
                         horizontal: 24.0,
                       ),
-                      child: Text(
-                        "Select Weight",
-                        style: Constants.regularDarkText,
+                      child: Row(
+                        children: [
+                          Text(
+                            "In stock",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).accentColor,
+
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: FlutterSwitch(
+                                width: 110.0,
+                                height: 45.0,
+                                valueFontSize: 25.0,
+                                toggleSize: 45.0,
+                                value: product.available,
+                                borderRadius: 30.0,
+                                padding: 8.0,
+                                showOnOff: true,
+                                activeColor: Colors.green,
+                                onToggle: (val) {
+                                  setState(() {
+                                    _firebaseServices.productsRef
+                                        .doc(product.id)
+                                        .update({"available":val});
+                                  });
+                                },
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    ProductSize(
-                      productSizes: productSizes,
-                      onSelected: (weight) {
-                        _selectedProductSize = weight;
-                      },
-                    ),
                     Padding(
-                      padding: const EdgeInsets.all(24.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            onTap: () async {
-                              await _addToSaved();
-                              Scaffold.of(context).showSnackBar(_snackBarSaved);
-                            },
-                            child: Container(
-                              width: 65.0,
-                              height: 65.0,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFDCDCDC),
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              alignment: Alignment.center,
-                              child: Image(
-                                image: AssetImage(
-                                  "assets/images/tab_saved.png",
-                                ),
-                                height: 22.0,
-                              ),
-                            ),
-                          ),
                           Expanded(
                             child: GestureDetector(
                               onTap: () async {
-                                await _addToCart();
-                                Scaffold.of(context).showSnackBar(_snackBar);
                               },
                               child: Container(
                                 height: 65.0,
-                                margin: EdgeInsets.only(
-                                  left: 16.0,
-                                ),
+                                margin: EdgeInsets.symmetric(horizontal: 36.0),
                                 decoration: BoxDecoration(
                                   color: Colors.black,
                                   borderRadius: BorderRadius.circular(12.0),
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  "Add To Cart",
+                                  "Edit",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16.0,
