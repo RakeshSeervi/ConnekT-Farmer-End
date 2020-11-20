@@ -1,4 +1,5 @@
 import 'package:agri_com/constants.dart';
+import 'package:agri_com/models/product.dart';
 import 'package:agri_com/services/firebase_services.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:agri_com/widgets/custom_input.dart';
@@ -57,10 +58,7 @@ class _SearchTabState extends State<SearchTab> {
                     ),
                     children: snapshot.data.docs.map((document) {
                       return ProductCard(
-                        title: document.data()['name'],
-                        imageUrl: document.data()['images'][0],
-                        price: "\$${document.data()['price']}",
-                        productId: document.id,
+                        product: Product.fromSnapshot(document),
                       );
                     }).toList(),
                   );

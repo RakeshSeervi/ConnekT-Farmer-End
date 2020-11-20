@@ -10,9 +10,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProductPage extends StatefulWidget {
-  final String productId;
+  final Product product;
 
-  ProductPage({this.productId});
+  ProductPage({this.product});
 
   @override
   _ProductPageState createState() => _ProductPageState();
@@ -30,7 +30,7 @@ class _ProductPageState extends State<ProductPage> {
     return _firebaseServices.usersRef
         .doc(_firebaseServices.getUserId())
         .collection("Cart")
-        .doc(widget.productId)
+        .doc(widget.product.id)
         .set({"Weight": _selectedProductSize});
   }
 
@@ -38,7 +38,7 @@ class _ProductPageState extends State<ProductPage> {
     return _firebaseServices.usersRef
         .doc(_firebaseServices.getUserId())
         .collection("Saved")
-        .doc(widget.productId)
+        .doc(widget.product.id)
         .set({"Weight": _selectedProductSize});
   }
 
@@ -55,7 +55,7 @@ class _ProductPageState extends State<ProductPage> {
       body: Stack(
         children: [
           FutureBuilder(
-            future: _firebaseServices.productsRef.doc(widget.productId).get(),
+            future: _firebaseServices.productsRef.doc(widget.product.id).get(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Scaffold(

@@ -1,3 +1,4 @@
+import 'package:agri_com/models/product.dart';
 import 'package:agri_com/screens/product_form.dart';
 import 'package:agri_com/screens/product_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,24 +7,22 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class ProductGrid extends StatelessWidget {
-  final String productId;
+  final Product product;
   final Function onPressed;
-  final String imageUrl;
-  final String title;
-  final String price;
 
-  ProductGrid({this.onPressed, this.imageUrl, this.title, this.price, this.productId});
+
+  ProductGrid({this.onPressed, this.product});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: productId != null
+      onTap: product!= null
           ? () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ProductPage(
-                      productId: productId,
+                      product: product,
                     ),
                   ));
             }
@@ -47,7 +46,7 @@ class ProductGrid extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: Image.network(
-                  imageUrl ?? Constants.addImageUrl,
+                  product!=null?product.images[0] : Constants.addImageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -62,11 +61,11 @@ class ProductGrid extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      title ?? '',
+                      product!=null ? product.name: '',
                       style: Constants.regularHeading,
                     ),
                     Text(
-                      price ?? '',
+                      product!=null ?product.price.toString() : '',
                       style: TextStyle(
                           fontSize: 16.0,
                           color: Theme

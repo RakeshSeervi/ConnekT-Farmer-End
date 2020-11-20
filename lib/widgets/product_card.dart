@@ -1,3 +1,4 @@
+import 'package:agri_com/models/product.dart';
 import 'package:agri_com/screens/product_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,14 +6,12 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class ProductCard extends StatelessWidget {
-  final String productId;
+  final Product product;
   final Function onPressed;
-  final String imageUrl;
-  final String title;
-  final String price;
+
 
   ProductCard(
-      {this.onPressed, this.imageUrl, this.title, this.price, this.productId});
+      {this.onPressed, this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class ProductCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ProductPage(
-                productId: productId,
+                product: product,
               ),
             ));
       },
@@ -42,7 +41,7 @@ class ProductCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.0),
                 child: Image.network(
-                  "$imageUrl",
+                  "$product.images[0]",
                   fit: BoxFit.cover,
                 ),
               ),
@@ -57,11 +56,11 @@ class ProductCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      title,
+                      product.name,
                       style: Constants.regularHeading,
                     ),
                     Text(
-                      price,
+                      product.price.toString(),
                       style: TextStyle(
                           fontSize: 18.0,
                           color: Theme.of(context).accentColor,
