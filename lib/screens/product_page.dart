@@ -24,10 +24,6 @@ class _ProductPageState extends State<ProductPage> {
 
   FirebaseServices _firebaseServices = FirebaseServices();
 
-  String _selectedProductSize;
-  bool isSwitched ;
-
-
 
   final SnackBar _snackBarDelete = SnackBar(
     content: Text("Product Deleted"),
@@ -35,220 +31,185 @@ class _ProductPageState extends State<ProductPage> {
   final SnackBar _snackBarEdit = SnackBar(
     content: Text("Product Edited"),
   );
+  bool isSwitched;
+  @override
+  void initState() {
+    isSwitched = widget.product.available;
+    super.initState();
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          FutureBuilder(
-            future: _firebaseServices.productsRef.doc(widget.product.id).get(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Scaffold(
-                  body: Center(
-                    child: Text("Error: ${snapshot.error}"),
+          ListView(
+            padding: EdgeInsets.all(0),
+            children: [
+              ImageSwipe(
+                imageList: widget.product.images,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 24.0,
+                  left: 24.0,
+                  right: 24.0,
+                  bottom: 4.0,
+                ),
+                child: Text(
+                  widget.product.name,
+                  style: Constants.boldHeading,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4.0,
+                  horizontal: 24.0,
+                ),
+                child: Text(
+                  "\Rs ${widget.product.price}",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Theme.of(context).accentColor,
+                    fontWeight: FontWeight.w600,
                   ),
-                );
-              }
-
-              if (snapshot.connectionState == ConnectionState.done) {
-                Product product = Product.fromSnapshot(snapshot.data);
-                List productSizes;
-
-                if (product.category == 'Fruits')
-                  productSizes = Fruits[product.subCategory]['weighted']
-                      ? Fruits[product.subCategory]['weights']
-                      : [1];
-                else
-                  productSizes = Vegetables[product.subCategory]['weighted']
-                      ? Vegetables[product.subCategory]['weights']
-                      : [1];
-
-                _selectedProductSize = productSizes[0].toString();
-
-                return ListView(
-                  padding: EdgeInsets.all(0),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 24.0,
+                ),
+                child: Text(
+                  "${widget.product.description}",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4.0,
+                  horizontal: 24.0,
+                ),
+                child: Row(
                   children: [
-                    ImageSwipe(
-                      imageList: product.images,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 24.0,
-                        left: 24.0,
-                        right: 24.0,
-                        bottom: 4.0,
-                      ),
-                      child: Text(
-                        product.name,
-                        style: Constants.boldHeading,
+                    Text(
+                      "Category ",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).accentColor,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4.0,
-                        horizontal: 24.0,
-                      ),
-                      child: Text(
-                        "\Rs ${product.price}",
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: Theme.of(context).accentColor,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    Text(
+                      widget.product.category,
+                      style: TextStyle(
+                        fontSize: 16.0,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 24.0,
-                      ),
-                      child: Text(
-                        "${product.description}",
-                        style: TextStyle(
-                          fontSize: 16.0,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4.0,
-                        horizontal: 24.0,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Category ",
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context).accentColor,
-
-                            ),
-                          ),
-
-                          Text(
-                            product.category,
-                            style: TextStyle(
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4.0,
+                  horizontal: 24.0,
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      "Subcategory ",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).accentColor,
                       ),
                     ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4.0,
-                        horizontal: 24.0,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "Subcategory ",
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context).accentColor,
-
-                            ),
-                          ),
-
-                          Text(
-                            product.subCategory,
-                            style: TextStyle(
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      widget.product.subCategory,
+                      style: TextStyle(
+                        fontSize: 16.0,
                       ),
                     ),
-
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 24.0,
-                        horizontal: 24.0,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "In stock",
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context).accentColor,
-
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              child: FlutterSwitch(
-                                width: 110.0,
-                                height: 45.0,
-                                valueFontSize: 25.0,
-                                toggleSize: 45.0,
-                                value: product.available,
-                                borderRadius: 30.0,
-                                padding: 8.0,
-                                showOnOff: true,
-                                activeColor: Colors.green,
-                                onToggle: (val) {
-                                  setState(() {
-                                    _firebaseServices.productsRef
-                                        .doc(product.id)
-                                        .update({"available":val});
-                                  });
-                                },
-                              ),
-                            ),
-                          )
-                        ],
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 24.0,
+                  horizontal: 24.0,
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      "In stock",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).accentColor,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () async {
-                              },
-                              child: Container(
-                                height: 65.0,
-                                margin: EdgeInsets.symmetric(horizontal: 36.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Edit",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
+                      child: Container(
+                        child: FlutterSwitch(
+                          width: 110.0,
+                          height: 45.0,
+                          valueFontSize: 25.0,
+                          toggleSize: 45.0,
+                          value: isSwitched,
+                          borderRadius: 30.0,
+                          padding: 8.0,
+                          showOnOff: true,
+                          activeColor: Colors.green,
+                          onToggle: (val) {
+                            _firebaseServices.productsRef
+                                .doc(widget.product.id)
+                                .update({"available": val});
+
+                            setState(() {
+                              isSwitched = val;
+                            });
+                          },
+                        ),
                       ),
                     )
                   ],
-                );
-              }
-
-              // Loading State
-              return Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
                 ),
-              );
-            },
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {},
+                        child: Container(
+                          height: 65.0,
+                          margin: EdgeInsets.symmetric(horizontal: 36.0),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Edit",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
           ),
           CustomActionBar(
             hasBackArrrow: true,

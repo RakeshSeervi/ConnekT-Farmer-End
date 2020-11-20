@@ -8,10 +8,8 @@ import '../constants.dart';
 
 class ProductGrid extends StatelessWidget {
   final Product product;
-  final Function onPressed;
 
-
-  ProductGrid({this.onPressed, this.product});
+  ProductGrid({this.product});
 
   @override
   Widget build(BuildContext context) {
