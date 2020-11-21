@@ -7,59 +7,39 @@ class OrderSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (names.length) {
-      case 1:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(names[0]),
-            ),
-          ],
-        );
-      case 2:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(names[0] + ' and'),
-            ),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(names[1]),
-            ),
-          ],
-        );
-      case 3:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(names[0] + ', ' + names[1]),
-            ),
-            FittedBox(fit: BoxFit.scaleDown, child: Text('and ' + names[2])),
-          ],
-        );
-      default:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(names[0] + ', ' + names[1]),
-            ),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(names[2] +
-                  ' and ' +
-                  (names.length - 3).toString() +
-                  ' others'),
-            )
-          ],
-        );
+    String line1;
+    String line2;
+    int count = names.length;
+
+    if (count < 3) {
+      line1 = count == 1 ? names[0] : names[0] + ' and ' + names[1];
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(line1),
+          ),
+        ],
+      );
+    } else {
+      line1 = names[0] + ', ' + names[1];
+      line2 = count == 3
+          ? 'and ' + names[2]
+          : names[2] + ' and ' + (count - 3).toString() + ' others';
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(line1),
+          ),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(line2),
+          ),
+        ],
+      );
     }
   }
 }

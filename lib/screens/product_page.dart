@@ -16,7 +16,6 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-
   final SnackBar _snackBarDelete = SnackBar(
     content: Text("Product Deleted"),
   );
@@ -47,7 +46,7 @@ class _ProductPageState extends State<ProductPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
@@ -67,13 +66,13 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                         ],
                       ),
-                      Flexible(
-                        child: Text(
-                          "${widget.product.description}",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                          ),
+                      Text(
+                        "${widget.product.description}",
+                        style: TextStyle(
+                          fontSize: 16.0,
                         ),
+                        maxLines: 8,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       Column(
                         children: [
@@ -97,7 +96,8 @@ class _ProductPageState extends State<ProductPage> {
                             ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            padding:
+                            const EdgeInsets.symmetric(vertical: 16.0),
                             child: Row(
                               children: [
                                 Expanded(
