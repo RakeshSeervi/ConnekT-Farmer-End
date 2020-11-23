@@ -1,6 +1,6 @@
 import 'package:agri_com/models/product.dart';
 import 'package:agri_com/widgets/custom_action_bar.dart';
-import 'package:agri_com/widgets/product_grid.dart';
+import 'package:agri_com/widgets/store_product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +106,7 @@ class CustomisedView extends StatelessWidget {
       ),
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 32.0),
+          padding: const EdgeInsets.only(left: 24.0),
           child: Text(
             'Active',
             style: TextStyle(
@@ -116,19 +116,19 @@ class CustomisedView extends StatelessWidget {
           ),
         ),
         GridView.count(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: EdgeInsets.zero,
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 2,
-            children: [ProductGrid()] +
+            children: [StoreProduct()] +
                 active.map((product) {
                   if (product != null)
-                    return ProductGrid(
+                    return StoreProduct(
                       product: product,
                     );
                 }).toList()),
         Padding(
-          padding: const EdgeInsets.only(left: 32.0),
+          padding: const EdgeInsets.only(left: 24.0),
           child: Text(
             'Inactive',
             style: TextStyle(
@@ -140,21 +140,21 @@ class CustomisedView extends StatelessWidget {
         ),
         inactive.length > 0
             ? GridView.count(
-                padding: EdgeInsets.symmetric(vertical: 8),
+          padding: EdgeInsets.zero,
                 crossAxisCount: 2,
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 children: inactive.map((product) {
                   if (product != null)
-                    return ProductGrid(
+                    return StoreProduct(
                       product: product,
                     );
                 }).toList(),
               )
             : Padding(
-                padding: const EdgeInsets.only(left: 32.0),
-                child: Text('No inactive products'),
-              ),
+          padding: const EdgeInsets.only(left: 24.0),
+          child: Text('No inactive products'),
+        ),
       ],
     );
   }

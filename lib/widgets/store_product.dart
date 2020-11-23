@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
-class ProductGrid extends StatelessWidget {
+class StoreProduct extends StatelessWidget {
   final Product product;
 
-  ProductGrid({this.product});
+  StoreProduct({this.product});
 
   @override
   Widget build(BuildContext context) {

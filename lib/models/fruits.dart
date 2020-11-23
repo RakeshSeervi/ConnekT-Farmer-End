@@ -1,7 +1,5 @@
 const String WEIGHTED = 'weighted';
 const String WEIGHTS = 'weights';
-const String MIN_WEIGHT = 'min-weight';
-const String MAX_WEIGHT = 'max-weight';
 const String IMAGE_PATH = 'assets/images/fruits/';
 const List<double> WEIGHT1 = [0.5, 1, 5];
 const List<double> WEIGHT2 = [0.25, 0.5, 1];
@@ -29,14 +27,12 @@ const Map<String, Map<String, dynamic>> Fruits = {
   },
   'Papaya': {
     WEIGHTED: false,
-    MIN_WEIGHT: 0.7,
-    MAX_WEIGHT: 1,
+    WEIGHTS: [0.7, 1],
     IMAGE_PATH: IMAGE_PATH + '',
   },
   'Brown Coconut': {
     WEIGHTED: false,
-    MIN_WEIGHT: 0.4,
-    MAX_WEIGHT: 0.8,
+    WEIGHTS: [0.4, 0.8],
     IMAGE_PATH: IMAGE_PATH + '',
   },
   'Sweet Lime [Mosambi]': {
@@ -51,8 +47,7 @@ const Map<String, Map<String, dynamic>> Fruits = {
   },
   'Watermelon': {
     WEIGHTED: false,
-    MIN_WEIGHT: 1.25,
-    MAX_WEIGHT: 2.25,
+    WEIGHTS: [1.25, 2.25],
     IMAGE_PATH: IMAGE_PATH + '',
   },
   'Kiwi': {
@@ -62,8 +57,7 @@ const Map<String, Map<String, dynamic>> Fruits = {
   },
   'Pineapple': {
     WEIGHTED: false,
-    MIN_WEIGHT: 0.8,
-    MAX_WEIGHT: 1.2,
+    WEIGHTS: [0.8, 1.2],
     IMAGE_PATH: IMAGE_PATH + '',
   },
   'Avocado': {
@@ -73,8 +67,7 @@ const Map<String, Map<String, dynamic>> Fruits = {
   },
   'Muskmelon': {
     WEIGHTED: false,
-    MIN_WEIGHT: 0.6,
-    MAX_WEIGHT: 1,
+    WEIGHTS: [0.6, 1],
     IMAGE_PATH: IMAGE_PATH + '',
   },
   'Custard Apple': {

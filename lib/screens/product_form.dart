@@ -2,6 +2,7 @@ import 'package:agri_com/models/fruits.dart';
 import 'package:agri_com/models/vegetables.dart';
 import 'package:agri_com/services/product_service.dart';
 import 'package:agri_com/widgets/category_dialog.dart';
+import 'package:agri_com/widgets/custom_action_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -66,198 +67,190 @@ class _ProductFormState extends State<ProductForm> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Add a product"),
-      ),
       body: Stack(children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
-          child: ListView(
-            children: [
-              FormBuilder(
-                key: _fbKey,
-                autovalidateMode: _autovalidateMode,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FormBuilderImagePicker(
-                        attribute: 'images',
-                        decoration: const InputDecoration(
-                          labelText: 'Images',
-                        ),
-                        defaultImage: NetworkImage(
-                            'https://cohenwoodworking.com/wp-content/uploads/2016/09/image-placeholder-500x500.jpg'),
-                        maxImages: 3,
-                        iconColor: Colors.red,
-                        // readOnly: true,
-                        validators: [
-                          FormBuilderValidators.required(),
-                          (images) {
-                            if (images.length < 2) {
-                              return 'Two or more images required.';
-                            }
-                            return null;
+        ListView(
+          padding: EdgeInsets.only(left: 8, right: 8, top: 108, bottom: 12),
+          children: [
+            FormBuilder(
+              key: _fbKey,
+              autovalidateMode: _autovalidateMode,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FormBuilderImagePicker(
+                      attribute: 'images',
+                      decoration: const InputDecoration(
+                        labelText: 'Images',
+                      ),
+                      defaultImage: NetworkImage(
+                          'https://cohenwoodworking.com/wp-content/uploads/2016/09/image-placeholder-500x500.jpg'),
+                      maxImages: 3,
+                      iconColor: Colors.red,
+                      // readOnly: true,
+                      validators: [
+                        FormBuilderValidators.required(),
+                        (images) {
+                          if (images.length < 2) {
+                            return 'Two or more images required.';
                           }
-                        ],
-                      ),
+                          return null;
+                        }
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FormBuilderTextField(
-                        attribute: 'name',
-                        controller: productName,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Product name'),
-                        validators: [FormBuilderValidators.required()],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FormBuilderTextField(
+                      attribute: 'name',
+                      controller: productName,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Product name'),
+                      validators: [FormBuilderValidators.required()],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FormBuilderTextField(
-                        attribute: 'price',
-                        controller: price,
-                        decoration: InputDecoration(
-                          labelText: 'Price per unit or kg',
-                          prefix: Text('Rs '),
-                        ),
-                        valueTransformer: (text) {
-                          return text == null ? null : num.tryParse(text);
-                        },
-                        validators: [
-                          FormBuilderValidators.required(),
-                          FormBuilderValidators.numeric(),
-                          (value) {
-                            return num.tryParse(value) == 0
-                                ? 'Price has to be greater than 0'
-                                : null;
-                          }
-                        ],
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FormBuilderTextField(
+                      attribute: 'price',
+                      controller: price,
+                      decoration: InputDecoration(
+                        labelText: 'Price per unit or kg',
+                        prefix: Text('Rs '),
                       ),
+                      valueTransformer: (text) {
+                        return text == null ? null : num.tryParse(text);
+                      },
+                      validators: [
+                        FormBuilderValidators.required(),
+                        FormBuilderValidators.numeric(),
+                        (value) {
+                          return num.tryParse(value) == 0
+                              ? 'Price has to be greater than 0'
+                              : null;
+                        }
+                      ],
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FormBuilderTextField(
-                        attribute: 'description',
-                        controller: description,
-                        keyboardType: TextInputType.multiline,
-                        decoration: InputDecoration(
-                          labelText: 'Description',
-                        ),
-                        focusNode: _focusNode,
-                        minLines: 3,
-                        maxLines: null,
-                        validators: [FormBuilderValidators.required()],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FormBuilderTextField(
+                      attribute: 'description',
+                      controller: description,
+                      keyboardType: TextInputType.multiline,
+                      decoration: InputDecoration(
+                        labelText: 'Description',
                       ),
+                      focusNode: _focusNode,
+                      minLines: 3,
+                      maxLines: null,
+                      validators: [FormBuilderValidators.required()],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FormBuilderRadioGroup(
-                        wrapAlignment: WrapAlignment.spaceAround,
-                        attribute: 'category',
-                        decoration:
-                            const InputDecoration(labelText: 'Category'),
-                        onChanged: (val) {
-                          switchCategory(val);
-                        },
-                        initialValue: 'Fruits',
-                        options: [
-                          FormBuilderFieldOption(
-                              value: 'Fruits', child: Text('Fruits')),
-                          FormBuilderFieldOption(
-                              value: 'Vegetables', child: Text('Vegetables')),
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FormBuilderRadioGroup(
+                      wrapAlignment: WrapAlignment.spaceAround,
+                      attribute: 'category',
+                      decoration: const InputDecoration(labelText: 'Category'),
+                      onChanged: (val) {
+                        switchCategory(val);
+                      },
+                      initialValue: 'Fruits',
+                      options: [
+                        FormBuilderFieldOption(
+                            value: 'Fruits', child: Text('Fruits')),
+                        FormBuilderFieldOption(
+                            value: 'Vegetables', child: Text('Vegetables')),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: FormBuilderCustomField(
-                        attribute: 'sub-category',
-                        validators: [FormBuilderValidators.required()],
-                        formField: FormField(
-                          builder: (FormFieldState<dynamic> field) {
-                            return InputDecorator(
-                              decoration: InputDecoration(
-                                labelText: 'Sub-category',
-                                errorText: field.errorText,
-                              ),
-                              child: GestureDetector(
-                                child: subCategory.text != ''
-                                    ? Text(subCategory.text)
-                                    : Text('Select sub-category '),
-                                onTap: () async {
-                                  String res = await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return SubCategoryDialog(
-                                            items: items[category]);
-                                      });
-                                  setState(() {
-                                    subCategory.text = res;
-                                  });
-                                  field.didChange(subCategory.text);
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateColor.resolveWith(
-                                  (states) => Colors.black)),
-                          onPressed: isLoading
-                              ? null
-                              : () async {
-                                  setState(() {
-                                    _autovalidateMode =
-                                        AutovalidateMode.onUserInteraction;
-                                  });
-                                  if (_fbKey.currentState.saveAndValidate()) {
-                                    setState(() {
-                                      isLoading = true;
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FormBuilderCustomField(
+                      attribute: 'sub-category',
+                      validators: [FormBuilderValidators.required()],
+                      formField: FormField(
+                        builder: (FormFieldState<dynamic> field) {
+                          return InputDecorator(
+                            decoration: InputDecoration(
+                              labelText: 'Sub-category',
+                              errorText: field.errorText,
+                            ),
+                            child: GestureDetector(
+                              child: subCategory.text != ''
+                                  ? Text(subCategory.text)
+                                  : Text('Select sub-category '),
+                              onTap: () async {
+                                String res = await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return SubCategoryDialog(
+                                          items: items[category]);
                                     });
+                                setState(() {
+                                  subCategory.text = res;
+                                });
+                                field.didChange(subCategory.text);
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: isLoading
+                            ? null
+                            : () async {
+                                setState(() {
+                                  _autovalidateMode =
+                                      AutovalidateMode.onUserInteraction;
+                                });
+                                if (_fbKey.currentState.saveAndValidate()) {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
 
-                                    Map values = _fbKey.currentState.value;
+                                  Map values = _fbKey.currentState.value;
 
-                                    bool res =
-                                        await ProductService.addProduct(values);
+                                  bool res =
+                                      await ProductService.addProduct(values);
 
-                                    setState(() {
-                                      isLoading = false;
-                                    });
+                                  setState(() {
+                                    isLoading = false;
+                                  });
 
-                                    String msg = res == true
-                                        ? 'Product added succesfully'
-                                        : 'Failed to add product';
+                                  String msg = res == true
+                                      ? 'Product added succesfully'
+                                      : 'Failed to add product';
 
-                                    Fluttertoast.showToast(msg: msg);
+                                  Fluttertoast.showToast(msg: msg);
 
-                                    if (res == true)
-                                      Navigator.of(context).pop();
-                                  }
-                                },
-                          child: Text(
-                            'Done',
-                          ),
+                                  if (res == true) Navigator.of(context).pop();
+                                }
+                              },
+                        child: Text(
+                          'Done',
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
+        CustomActionBar(
+          hasBackArrrow: true,
+          title: 'Add a product',
         ),
         Visibility(
             visible: isLoading,

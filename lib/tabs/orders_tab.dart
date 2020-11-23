@@ -92,7 +92,7 @@ class CustomisedView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     orderSnapshots.forEach((QueryDocumentSnapshot snapshot) {
-      if (snapshot.data()['completed'] == false) {
+      if (snapshot.data()['packed'] == false) {
         pending.add(Order.fromSnapshot(snapshot));
       } else
         completed.add(Order.fromSnapshot(snapshot));
@@ -100,32 +100,32 @@ class CustomisedView extends StatelessWidget {
 
     return ListView(
       padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
         top: 108.0,
         bottom: 12.0,
       ),
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 16.0),
+          padding: const EdgeInsets.only(bottom: 16.0),
           child: Text(
             'Pending',
             style: TextStyle(
-                fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.red),
+              fontSize: 16.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.red,
+            ),
           ),
         ),
-        pending.length > 0
-            ? ListView(
-            padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: pending.map((order) {
-                  if (order != null) return OrderCard(order: order);
-                }).toList())
-            : Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Text('No orders pending!'),
-              ),
+        if (pending.length > 0)
+          for (Order order in pending)
+            OrderCard(
+              order: order,
+            )
+        else
+          Text('No orders pending!'),
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 16),
+          padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
           child: Text(
             'Completed',
             style: TextStyle(
@@ -135,22 +135,13 @@ class CustomisedView extends StatelessWidget {
             ),
           ),
         ),
-        completed.length > 0
-            ? ListView(
-          padding: const EdgeInsets.only(left: 8, right: 8, top: 16),
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          children: completed.map((order) {
-            if (order != null)
-              return OrderCard(
-                order: order,
-              );
-          }).toList(),
-        )
-            : Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Text('No orders to show'),
-              ),
+        if (completed.length > 0)
+          for (Order order in completed)
+            OrderCard(
+              order: order,
+            )
+        else
+          Text('No orders to show!'),
       ],
     );
   }

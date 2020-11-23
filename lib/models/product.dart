@@ -21,6 +21,7 @@ class Product {
   int _price;
   String _category;
   String _subCategory;
+  bool _isWeighted;
   List<double> _weights;
   String _sellerName;
   String _sellerId;
@@ -40,6 +41,8 @@ class Product {
 
   String get subCategory => _subCategory;
 
+  bool get isWeighted => _isWeighted;
+
   List<double> get weights => _weights;
 
   String get sellerId => _sellerId;
@@ -56,16 +59,13 @@ class Product {
     _price = snapshot.data()[PRICE];
     _category = snapshot.data()[CATEGORY];
     _subCategory = snapshot.data()[SUB_CATEGORY];
-
-    if (_category == 'Fruits')
-      _weights = Fruits[_subCategory]['weighted']
-          ? Fruits[_subCategory]['weights']
-          : [1];
-    else
-      _weights = Vegetables[_subCategory]['weighted']
-          ? Vegetables[_subCategory]['weights']
-          : [1];
-
+    if (_category == 'Fruits') {
+      _isWeighted = Fruits[_subCategory]['weighted'];
+      _weights = Fruits[_subCategory]['weights'];
+    } else {
+      _isWeighted = Vegetables[_subCategory]['weighted'];
+      _weights = Vegetables[_subCategory]['weights'];
+    }
     _sellerId = snapshot.data()[SELLER_ID];
     _sellerName = snapshot.data()[SELLER_NAME];
     _available = snapshot.data()[AVAILABLE];

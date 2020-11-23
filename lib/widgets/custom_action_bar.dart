@@ -31,8 +31,8 @@ class CustomActionBar extends StatelessWidget {
               : null),
       padding: EdgeInsets.only(
         top: 56.0,
-        left: 24.0,
-        right: 24.0,
+        left: 16.0,
+        right: 12.0,
         bottom: 42.0,
       ),
       child: Row(
@@ -43,8 +43,8 @@ class CustomActionBar extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: Container(
-                width: 42.0,
-                height: 42.0,
+                width: 36.0,
+                height: 36.0,
                 decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(8.0),
@@ -57,9 +57,12 @@ class CustomActionBar extends StatelessWidget {
                 ),
               ),
             ),
-          Text(
-            title ?? "",
-            style: Constants.boldHeading,
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: _hasBackArrow ? 16 : 0),
+            child: Text(
+              title ?? "",
+              style: Constants.boldHeading,
+            ),
           ),
         ],
       ),

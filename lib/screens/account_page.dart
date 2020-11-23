@@ -286,9 +286,9 @@ class _MyAccount extends State<MyAccount> {
                                     FlatButton(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(18.0),
+                                              BorderRadius.circular(18.0),
                                           side:
-                                          BorderSide(color: Colors.black)),
+                                              BorderSide(color: Colors.black)),
                                       color: Colors.black,
                                       textColor: Colors.red,
                                       onPressed: () {

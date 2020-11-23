@@ -22,7 +22,7 @@ class _ProductSizeState extends State<ProductSize> {
       child: Row(
         children: [
           for (var i = 0; i < widget.productSizes.length; i++)
-          GestureDetector(
+            GestureDetector(
               onTap: () {
                 // widget.onSelected(widget.productSizes[i].toString());
                 // setState(() {

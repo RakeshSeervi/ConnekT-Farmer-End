@@ -13,6 +13,7 @@ class OrderItem {
   int _price;
   String _imageUrl;
   List<int> _quantities;
+  bool _isWeighted;
   List<double> _weights;
 
   String get name => _name;
@@ -23,15 +24,21 @@ class OrderItem {
 
   List<int> get quantities => _quantities;
 
+  bool get isWeighted => _isWeighted;
+
   List<double> get weights => _weights;
 
   OrderItem.fromMap(Map productDetails) {
-    this._name = productDetails[NAME];
-    this._price = productDetails[PRICE];
-    this._imageUrl = productDetails[IMAGE];
-    this._quantities = productDetails[QUANTITIES].cast<int>();
-    this._weights = productDetails[CATEGORY] == 'Fruits'
-        ? Fruits[productDetails[SUB_CATEGORY]]['weights']
-        : Vegetables[productDetails[SUB_CATEGORY]]['weights'];
+    _name = productDetails[NAME];
+    _price = productDetails[PRICE];
+    _imageUrl = productDetails[IMAGE];
+    _quantities = productDetails[QUANTITIES].cast<int>();
+    if (productDetails[CATEGORY] == 'Fruits') {
+      _isWeighted = Fruits[productDetails[SUB_CATEGORY]]['weighted'];
+      _weights = Fruits[productDetails[SUB_CATEGORY]]['weights'];
+    } else {
+      _isWeighted = Vegetables[productDetails[SUB_CATEGORY]]['weighted'];
+      _weights = Vegetables[productDetails[SUB_CATEGORY]]['weights'];
+    }
   }
 }

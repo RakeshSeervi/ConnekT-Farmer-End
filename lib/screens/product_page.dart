@@ -96,8 +96,7 @@ class _ProductPageState extends State<ProductPage> {
                             ],
                           ),
                           Padding(
-                            padding:
-                            const EdgeInsets.symmetric(vertical: 16.0),
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
                             child: Row(
                               children: [
                                 Expanded(
@@ -136,7 +135,6 @@ class _ProductPageState extends State<ProductPage> {
                                     valueFontSize: 16.0,
                                     toggleSize: 16.0,
                                     value: isSwitched,
-                                    activeTextColor: Color(0xFFFF1E00),
                                     showOnOff: true,
                                     activeColor: Colors.black,
                                     onToggle: (val) async {

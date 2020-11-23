@@ -9,7 +9,8 @@ class Order {
   static const String PRODUCTS = 'products';
   static const String AMOUNT = 'amount';
   static const String ORDER_DATE = 'order-date';
-  static const String COMPLETED = 'completed';
+  static const String PACKED = 'packed';
+  static const String PACKED_DATE = 'packed-date';
 
   String _id;
   String _buyerId;
@@ -19,7 +20,8 @@ class Order {
   List<OrderItem> _products = [];
   int _amount;
   Timestamp _orderDate;
-  bool _completed;
+  bool _packed;
+  Timestamp _packedDate;
 
   List _rawProducts;
 
@@ -39,7 +41,9 @@ class Order {
 
   DateTime get orderDate => _orderDate.toDate();
 
-  bool get completed => _completed;
+  bool get packed => _packed;
+
+  DateTime get packedDate => _packedDate.toDate();
 
   Order.fromSnapshot(DocumentSnapshot snapshot) {
     _id = snapshot.id;
@@ -49,7 +53,8 @@ class Order {
     _sellerName = snapshot.data()[SELLER_NAME];
     _amount = snapshot.data()[AMOUNT];
     _orderDate = snapshot.data()[ORDER_DATE];
-    _completed = snapshot.data()[COMPLETED];
+    _packed = snapshot.data()[PACKED];
+    _packedDate = snapshot.data()[PACKED_DATE];
     _rawProducts = snapshot.data()[PRODUCTS];
 
     _rawProducts.forEach((productMap) {

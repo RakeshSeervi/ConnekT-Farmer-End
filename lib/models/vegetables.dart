@@ -1,7 +1,5 @@
 const String WEIGHTED = 'weighted';
 const String WEIGHTS = 'weights';
-const String MIN_WEIGHT = 'min-weight';
-const String MAX_WEIGHT = 'max-weight';
 const String IMAGE_PATH = 'assets/images/vegetables/';
 const List<double> WEIGHT1 = [0.5, 1, 5];
 const List<double> WEIGHT2 = [0.25, 0.5, 1];
@@ -39,8 +37,7 @@ const Map<String, Map<String, dynamic>> Vegetables = {
   },
   'Bottle Gourd': {
     WEIGHTED: false,
-    MIN_WEIGHT: 0.6,
-    MAX_WEIGHT: 0.9,
+    WEIGHTS: [0.6, 0.9],
     IMAGE_PATH: IMAGE_PATH + '',
   },
   'Ginger': {
@@ -65,8 +62,7 @@ const Map<String, Map<String, dynamic>> Vegetables = {
   },
   'Cabbage': {
     WEIGHTED: false,
-    MIN_WEIGHT: 0.5,
-    MAX_WEIGHT: 0.8,
+    WEIGHTS: [0.5, 0.8],
     IMAGE_PATH: IMAGE_PATH + '',
   },
   'Garlic': {
@@ -96,8 +92,7 @@ const Map<String, Map<String, dynamic>> Vegetables = {
   },
   'Pumpkin': {
     WEIGHTED: false,
-    MIN_WEIGHT: 1,
-    MAX_WEIGHT: 1,
+    WEIGHTS: [1, 1],
     IMAGE_PATH: IMAGE_PATH + '',
   },
   'Cluster beans': {
@@ -107,8 +102,7 @@ const Map<String, Map<String, dynamic>> Vegetables = {
   },
   'Cauliflower': {
     WEIGHTED: false,
-    MIN_WEIGHT: 0.4,
-    MAX_WEIGHT: 0.6,
+    WEIGHTS: [0.4, 0.6],
     IMAGE_PATH: IMAGE_PATH + '',
   },
   'Mushroom': {
