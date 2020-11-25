@@ -22,7 +22,7 @@ class ProductService {
   static const String AVAILABLE = 'available';
 
   static Future<bool> addProduct(Map data) async {
-    List<String> downloadableUrls = [];
+    List downloadableUrls = [];
     List images = data[IMAGES];
 
     for (int i = 0; i < images.length; i++) {
@@ -30,7 +30,7 @@ class ProductService {
       downloadableUrls.add(url);
     }
 
-    if (downloadableUrls.length < 1) return false;
+    if (downloadableUrls.length < images.length) return false;
 
     return await _firestore
         .collection(productsRef)
@@ -51,7 +51,7 @@ class ProductService {
         });
   }
 
-  static Future<String> getDownloadableUrl(image) async {
+  static Future getDownloadableUrl(image) async {
     StorageTaskSnapshot snapshot = await _storage
         .ref()
         .child("images/${_uuid.v1()}")
